@@ -2939,6 +2939,8 @@ __metadata:
     eslint-config-next: ~15.2.3
     eslint-config-prettier: ~10.1.1
     eslint-plugin-prettier: ~5.2.4
+    jotai: ^2.12.5
+    kaplay: ^3001.0.19
     kubo-rpc-client: ~5.0.2
     next: ~15.2.3
     next-nprogress-bar: ~2.3.13
@@ -8948,6 +8950,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jotai@npm:^2.12.5":
+  version: 2.12.5
+  resolution: "jotai@npm:2.12.5"
+  peerDependencies:
+    "@types/react": ">=17.0.0"
+    react: ">=17.0.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: 04193808dd716a09d5231782983f124e83832b3942329d94f934fce371c3c4cc3e2037cfc4c1afbd68e9930dd6e02a0c6c3e5c73f69fd4369a98334fdc536ea9
+  languageName: node
+  linkType: hard
+
 "js-sha3@npm:0.8.0":
   version: 0.8.0
   resolution: "js-sha3@npm:0.8.0"
@@ -9147,6 +9164,13 @@ __metadata:
   version: 6.0.2
   resolution: "just-diff@npm:6.0.2"
   checksum: 1a0c7524f640cb88ab013862733e710f840927834208fd3b85cbc5da2ced97acc75e7dcfe493268ac6a6514c51dd8624d2fd9d057050efba3c02b81a6dcb7ff9
+  languageName: node
+  linkType: hard
+
+"kaplay@npm:^3001.0.19":
+  version: 3001.0.19
+  resolution: "kaplay@npm:3001.0.19"
+  checksum: 3906427f6ce810f6390b5428324cf881bc8e305eea795461ebba8d83878f17c7360feb16066ab07b4a5b440f25e64eb3ee570474347a0838764c428fe908df8a
   languageName: node
   linkType: hard
 
