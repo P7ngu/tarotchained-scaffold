@@ -1,4 +1,5 @@
 //handles the entire game logic and physics 
+import { kill } from "process";
 import initKaplay from "~~/app/kaplayContext.js";
 import { store, textBoxContentAtom, isTextBoxVisibleAtom } from "~~/app/store/store.js";
 
@@ -9,12 +10,7 @@ export default function initGame() {
 
     k.loadSprite("tarotDesk", "./tarotDesk.png");
     k.loadSprite("background", "./background.png");
-    k.loadSprite("omino", "./omino.png");
-   k.loadSprite("butcher", "./butcher.png");
-   k.loadSprite("blackShop", "./blackShop.png");
-
-
-    //TODO: change the character
+    k.loadSprite("blackShop", "./blackShop.png");
     k.loadSprite("characters", "./characters.png",{
         sliceY: 2, 
         sliceX: 8, 
@@ -30,11 +26,11 @@ export default function initGame() {
         },
     });
 
-    k.add([k.sprite("background"), k.pos(0, 0), k.scale(1)]);
-    k.add([k.sprite("butcher"), k.pos(0, 0), k.scale(1)]);
-    k.add([k.sprite("blackShop"), k.pos(2000, 200), k.scale(0.25)]);
+    k.add([k.sprite("background"), k.pos(0, 0, 0), k.scale(1)]);
+   // k.add([k.sprite("butcher"), k.pos(800, 300), k.scale(0.25)]);
+   //k.add([k.sprite("blackShop"), k.pos(2000, 200), k.scale(0.25)]);
 
-    const player = k.add([
+      const player = k.add([
         k.sprite("characters", {anim: "down-idle"}),
         k.area(),
         k.body(), 
@@ -47,8 +43,6 @@ export default function initGame() {
             direction: k.vec2(0,0), 
         },
 ]);
-
-
 
     const shop = k.add([
         k.sprite("tarotDesk"),
@@ -67,25 +61,29 @@ export default function initGame() {
         
     });
 
+     const blackShop = k.add([
+        k.sprite("blackShop"),
+        k.pos(2300, 380),
+        k.anchor("center"),
+        k.scale(0.28),
+        k.area(),
+        k.body({ isStatic: true }), 
+        "blackShop",
+    ]);
 
 player.onUpdate(() => {
 player.direction.x = 0; 
 player.direction.y = 0;
 
-
-
-//passi come stringa come parametro il tasto
 if (k.isKeyDown("left")) player.direction.x = -1;
 if (k.isKeyDown("right")) player.direction.x = 1;
 if (k.isKeyDown("up")) player.direction.y = -1; 
 if (k.isKeyDown("down")) player.direction.y = 1;
 
 
-if ( 
-    player.direction.eq(k.vec2(-1,0)) &&
-    player.getCurAnim().name !== "left"
+if ( player.direction.eq(k.vec2(-1,0)) && player.getCurAnim().name !== "left"
 ) {
-    player.play("left");
+ player.play("left");
 }
 
 if ( 
