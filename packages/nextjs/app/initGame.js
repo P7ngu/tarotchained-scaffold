@@ -31,9 +31,6 @@ export default function initGame() {
         },
     });
 
-    //k.add([k.sprite("background"), k.pos(0, 0, 0), k.scale(1)]);
-   // k.add([k.sprite("butcher"), k.pos(800, 300), k.scale(0.25)]);
-   //k.add([k.sprite("blackShop"), k.pos(2000, 200), k.scale(0.25)]);
 
     const background = k.add([
         k.sprite("background"), 
