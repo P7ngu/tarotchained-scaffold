@@ -33,7 +33,7 @@ contract YourContract is ERC1155, CardsContract, Ownable {
      Ownable(msg.sender) 
     {
         setupUrisForTesting();
-        createCard(0); //Minting the BW card as the first one
+        assignFirstCard(tokenReceiver); //Minting the BW card as the first one
     }
 
     function setupUrisForTesting () private {
@@ -41,7 +41,7 @@ contract YourContract is ERC1155, CardsContract, Ownable {
         cardUri[0]  = "ipfs://bafkreifu7wfdmwaiazl4xzpjdmvyt3cijzv3uzgyzq7wwanzgqfcruuqf4";
     }
 
-    
+
      //Override ERC-1155’s URI lookup to use mapping, we must use uint256 here, but the func is view only
     function uri(uint256 id) public view override returns (string memory) {
         require(id <= NUM_CARDS, "Invalid card ID");
@@ -62,11 +62,11 @@ contract YourContract is ERC1155, CardsContract, Ownable {
         emit BatchCardsMinted(ids);
     }
 
-    function createCard(uint8 cardId) public onlyOwner {
-        require(cardId >= 0 && cardId <= NUM_CARDS, "Invalid card ID");
-        mint(tokenReceiver, cardId, 1, "");
-        emit CardCreated(cardId);
+    function assignFirstCard(address to) public {
+        mint(to, 0, 1, "");
+        emit CardAssigned(0, to);
     }
+
     function assignSpecificCard(uint8 cardId, address to) public {
         require(cardId >= 0 && cardId <= NUM_CARDS, "Invalid card ID");
         mint(to, cardId, 1, "");
