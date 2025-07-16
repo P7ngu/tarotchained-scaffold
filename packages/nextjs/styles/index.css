@@ -30,16 +30,15 @@ body {
 }
 
 #ui {
-  position: absolute; 
+  position: absolute;
   top: 50%;
   left: 50%;
-  width: calc(var(--width) * 1px);
-  height: calc(var(--height) * 1px);
-  transform: translate(-50%, -50%) scale(var(--scale, 0));
+  width: var(--width); 
+  height: var(--height);
+  transform: translate(-50%, -50%) scale(var(--scale, 1)); 
   transform-origin: center;
   box-sizing: border-box;
   z-index: 10;
   user-select: none;
   pointer-events: none;
 }
-
