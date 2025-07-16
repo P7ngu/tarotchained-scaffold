@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { Provider } from "jotai";
 import initGame from "~~/app/initGame.js";
+import ReactUI from "~~/app/reactUI.jsx";
 import { store } from "~~/app/store/store.js";
 
 export default function AppWrapper({ children }: { children: ReactNode }) {
@@ -36,6 +37,7 @@ export default function AppWrapper({ children }: { children: ReactNode }) {
     <Provider store={store}>
       <div id="ui" ref={uiRef}>
         {children}
+        <ReactUI />
       </div>
     </Provider>
   );

@@ -55,6 +55,7 @@ export default function initGame() {
 
     shop.onCollide("player", (player) => {
         console.log("player entered shop");
+        store.set(isTextBoxVisibleAtom, true);  
         store.set(textBoxContentAtom, "Benvenuto nella mia bottega!");
         
     });
@@ -117,7 +118,6 @@ player.move(player.direction.scale(player.speed));
 });
 
  
-store.set(isTextBoxVisibleAtom, true);  
 
 
 }

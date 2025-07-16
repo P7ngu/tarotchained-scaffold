@@ -1,4 +1,4 @@
-import { isTextBowVisibleAtom, textBoxContentAtom } from "~~/app/store/store.js";
+import { isTextBoxVisibleAtom, textBoxContentAtom } from "~~/app/store/store.js";
 import { useAtomValue, useAtom } from "jotai";
 import "~~/styles/textbox.css"
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ const variants = {
 };
 
 export default function TextBox(){
-    const [isVisible, setIsVisible] = useAtom(isTextBowVisibleAtom)
+    const [isVisible, setIsVisible] = useAtom(isTextBoxVisibleAtom)
     const content = useAtomValue(textBoxContentAtom);
 
     const [isCloseRequest, setIsCloseRequest] = useState(false);

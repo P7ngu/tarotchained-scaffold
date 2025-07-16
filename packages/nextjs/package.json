@@ -24,6 +24,7 @@
     "blo": "~1.2.0",
     "burner-connector": "0.0.16",
     "daisyui": "5.0.9",
+    "framer-motion": "^12.23.6",
     "jotai": "^2.12.5",
     "kaplay": "^3001.0.19",
     "kubo-rpc-client": "~5.0.2",
