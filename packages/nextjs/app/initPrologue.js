@@ -1,5 +1,4 @@
 import initKaplay from "~~/app/kaplayContext.js";
-import { isTextBoxVisibleAtom, store, textBoxContentAtom} from "~~/app/store/store.js";
 import initGame from "~~/app/initGame.js";
 
 export default function initPrologue() {
@@ -155,6 +154,13 @@ export default function initPrologue() {
     k.loadSprite("letter", "./letter.png");
 
 
+    k.loadSprite("text1", "./text2.png");
+    k.loadSprite("text2", "./text3.png");
+    k.loadSprite("text3", "./text4.png");
+    k.loadSprite("text4", "./text5.png");
+    k.loadSprite("text5", "./text6.png");
+
+
     const bed = k.add([
         k.sprite("bed"), 
         k.pos(1000, 650),
@@ -184,30 +190,43 @@ export default function initPrologue() {
 
     let chest = null;
     let card = null;
+    let text = null;
     closet.onCollide("player", (player) => {
         let step = 0;
 
-        store.set(textBoxContentAtom, "Why is my closet open?");
-        store.set(isTextBoxVisibleAtom, true);
+        text = k.add([
+            k.sprite("text1"),
+            k.pos(k.center().x, k.center().y + 450), 
+            k.anchor("center"),
+            "text1",
+        ]);
     
         window.addEventListener("keydown", handleKeyPress);
     
         function handleKeyPress(e) {
             if (e.code === "Enter") {
                 if (step == 0){
-                    store.set(textBoxContentAtom, "Who put this chest in here? I want to check.");
+
+                    text = k.add([
+                        k.sprite("text2"),
+                        k.pos(k.center().x, k.center().y + 450), 
+                        k.anchor("center"),
+                        "text2",
+                    ]);
                     step++;
                 }else if (step == 1){
-                    store.set(isTextBoxVisibleAtom, false);
-
                     chest = k.add([
                         k.sprite("chest"),
                         k.pos(k.center().x, k.center().y), 
                         k.anchor("center"),
                         "chest",
                     ]);
-                    store.set(textBoxContentAtom, "I need to check more closely");
-                    store.set(isTextBoxVisibleAtom, true);
+                    text = k.add([
+                        k.sprite("text3"),
+                        k.pos(k.center().x, k.center().y + 450), 
+                        k.anchor("center"),
+                        "text3",
+                    ]);
 
                     step++;
                 } else if (step == 2){
@@ -220,8 +239,12 @@ export default function initPrologue() {
                         k.scale(4), 
                         "card",
                     ]);
-                    store.set(textBoxContentAtom, "what is that supposed to mean?");
-                    store.set(isTextBoxVisibleAtom, true);
+                    text = k.add([
+                        k.sprite("text4"),
+                        k.pos(k.center().x, k.center().y + 450), 
+                        k.anchor("center"),
+                        "text4",
+                    ]);
                     step++;
                 } else if (step == 3){
                     card.destroy();
@@ -233,11 +256,14 @@ export default function initPrologue() {
                         k.scale(4), 
                         "letter",
                     ]);
-                    store.set(textBoxContentAtom, "I have to find them.");
-                    store.set(isTextBoxVisibleAtom, true);
+                    text = k.add([
+                        k.sprite("text5"),
+                        k.pos(k.center().x, k.center().y + 450), 
+                        k.anchor("center"),
+                        "text5",
+                    ]);
                     step++;
                 }else {
-                    store.set(isTextBoxVisibleAtom, false);
                     createSecondOverlay();
                     return;
                 }

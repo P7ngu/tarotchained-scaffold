@@ -4,9 +4,28 @@
 // ← this file runs in the browser
 import { useEffect, useRef } from "react";
 import { Provider } from "jotai";
-import ReactUI from "~~/app/reactUI.jsx";
 import { store } from "~~/app/store/store.js";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
+
+// app/ClientProviders.tsx  (client component)
+
+// app/ClientProviders.tsx  (client component)
+
+// app/ClientProviders.tsx  (client component)
+
+// app/ClientProviders.tsx  (client component)
+
+// app/ClientProviders.tsx  (client component)
+
+// app/ClientProviders.tsx  (client component)
+
+// app/ClientProviders.tsx  (client component)
+
+// app/ClientProviders.tsx  (client component)
+
+// app/ClientProviders.tsx  (client component)
+
+// app/ClientProviders.tsx  (client component)
 
 // app/ClientProviders.tsx  (client component)
 
@@ -56,7 +75,6 @@ export default function ClientProviders({ children }: { children: React.ReactNod
       <>
         <div id="ui" ref={uiRef} />
         <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
-        <ReactUI />
       </>
     </Provider>
   );
