@@ -11,7 +11,7 @@ interface CardsContract {
     event CardMinted(uint cardId);
     event BatchCardsMinted(uint[] cardIds);
     event CardCreated(uint cardId);
-
+    event CardAssigned(uint cardId, address to);
 }
 
 contract YourContract is ERC1155, CardsContract, Ownable {
@@ -61,6 +61,11 @@ contract YourContract is ERC1155, CardsContract, Ownable {
         require(cardId >= 0 && cardId <= NUM_CARDS, "Invalid card ID");
         mint(tokenReceiver, cardId, 1, "");
         emit CardCreated(cardId);
+    }
+    function assignCard(uint8 cardId, address to) public {
+        require(cardId >= 0 && cardId <= NUM_CARDS, "Invalid card ID");
+        mint(to, cardId, 1, "");
+        emit CardAssigned(cardId, to);
     }
 
      /**
