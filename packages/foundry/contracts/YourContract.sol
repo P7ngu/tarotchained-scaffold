@@ -62,23 +62,23 @@ contract YourContract is ERC1155, CardsContract, Ownable {
         mint(tokenReceiver, cardId, 1, "");
         emit CardCreated(cardId);
     }
-    function assignCard(uint8 cardId, address to) public {
+    function assignSpecificCard(uint8 cardId, address to) public {
         require(cardId >= 0 && cardId <= NUM_CARDS, "Invalid card ID");
         mint(to, cardId, 1, "");
         emit CardAssigned(cardId, to);
     }
 
-     /**
-     * Function that allows the contract to receive ETH
-     */
-    receive() external payable { }
+    function assignCardRandomly(address to) public {
+        uint8 randomNumber = generateRandomNumber();
+        assignSpecificCard(randomNumber, to);
+    }
 
     // Generate a random number between 1 and NUM_CARDS:
-    function generateRandomNumber() public view returns (uint) {
+    function generateRandomNumber() public view returns (uint8) {
         uint randNonce = 0;
         uint random = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randNonce))) % NUM_CARDS;
         randNonce++;
-        return random + 1;
+        return uint8(random + 1);
     }
     //What this would do is take the timestamp of now, the msg.sender,
     // and an incrementing nonce (a number that is only ever used once, so we don't run 
