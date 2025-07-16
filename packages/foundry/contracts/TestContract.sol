@@ -5,7 +5,15 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract TestContract is ERC1155, Ownable {
+interface CardsContract {
+    error CardsDoesntExist(uint cardId);
+    error Failed(uint cardId);
+    event CardMinted(uint cardId);
+    event CardCreated(uint cardId);
+
+}
+
+contract TestContract is ERC1155, Ownable, CardsContract {
     uint8 public constant NUM_CARDS = 22; 
     //23 cards in the collection + the RGB one, 8 bit - up to 255 cards, in case of future expansion, change it to uint16
 
