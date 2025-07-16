@@ -31,9 +31,17 @@ export default function initGame() {
         },
     });
 
-    k.add([k.sprite("background"), k.pos(0, 0, 0), k.scale(1)]);
+    //k.add([k.sprite("background"), k.pos(0, 0, 0), k.scale(1)]);
    // k.add([k.sprite("butcher"), k.pos(800, 300), k.scale(0.25)]);
    //k.add([k.sprite("blackShop"), k.pos(2000, 200), k.scale(0.25)]);
+
+    const background = k.add([
+        k.sprite("background"), 
+        k.pos(k.center()), 
+        k.scale(1), 
+        k.anchor("center"), 
+        "background"]);
+
 
       const player = k.add([
         k.sprite("characters", {anim: "down-idle"}),
@@ -137,35 +145,21 @@ if (k.isKeyDown("down")) player.direction.y = 1;
 
 
 if ( player.direction.eq(k.vec2(-1,0)) && player.getCurAnim().name !== "left"
-) {
- player.play("left");
-}
+) { player.play("left"); }
 
-if ( 
-    player.direction.eq(k.vec2(1, 0)) &&
-    player.getCurAnim().name !== "right"
-) {
+if (  player.direction.eq(k.vec2(1, 0)) && player.getCurAnim().name !== "right") {
     player.play("right");
 }
 
-if ( 
-    player.direction.eq(k.vec2(0, -1)) &&
-    player.getCurAnim().name !== "up"
-) {
+if ( player.direction.eq(k.vec2(0, -1)) && player.getCurAnim().name !== "up") { 
     player.play("up");
 }
 
-if ( 
-    player.direction.eq(k.vec2(0, 1)) &&
-    player.getCurAnim().name !== "down"
-) {
+if ( player.direction.eq(k.vec2(0, 1)) && player.getCurAnim().name !== "down") {
     player.play("down");
 }
 
-if (
-    player.direction.eq(k.vec2(0, 0)) &&
-    !player.getCurAnim().name.includes("idle")
-) {
+if (player.direction.eq(k.vec2(0, 0)) && !player.getCurAnim().name.includes("idle")) {
     player.play(`${player.getCurAnim().name}-idle`);
     
 }
@@ -175,9 +169,25 @@ if (player.direction.x && player.direction.y) {
     return;
 }
 player.move(player.direction.scale(player.speed));
-});
 
- 
+const screenWidth = k.width();
+const screenHeight = k.height();
+const margin = 50;
+const topMargin = screenHeight / 3.5; 
+
+
+const left = margin;
+const right = screenWidth - margin;
+const top = topMargin;
+const bottom = screenHeight - margin;
+
+if (player.pos.x < left) player.pos.x = left;
+if (player.pos.x > right) player.pos.x = right;
+if (player.pos.y < top) player.pos.y = top;
+if (player.pos.y > bottom) player.pos.y = bottom;
+
+
+});
 
 
 }
