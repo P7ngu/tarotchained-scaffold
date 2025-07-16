@@ -1,6 +1,7 @@
 // app/layout.tsx  (server component)
 import "@rainbow-me/rainbowkit/styles.css";
-import ClientProviders from "~~/app/ClientProvider";
+//import ClientProviders from "~~/app/ClientProvider";
+//import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
 // ← client component
 import "~~/styles/globals.css";
 
@@ -13,7 +14,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html suppressHydrationWarning>
       <body>
-        <ClientProviders>{children}</ClientProviders>
+        {/*<ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>*/}
+        {/*<ClientProviders>{children}</ClientProviders>*/}
+        {children}
       </body>
     </html>
   );
