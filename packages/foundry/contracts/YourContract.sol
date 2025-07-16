@@ -5,12 +5,15 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+
+
 interface CardsContract {
     error CardsDoesntExist(uint cardId);
     error Failed(uint cardId);
     event CardMinted(uint cardId);
     event BatchCardsMinted(uint[] cardIds);
-    event CardCreated(uint cardId);
+    event CardAssigned(uint cardId, address to);
 
 }
 
@@ -18,6 +21,9 @@ contract YourContract is ERC1155, CardsContract, Ownable {
     uint8 public constant NUM_CARDS = 22; 
     address public tokenReceiver = 0xc34460FF8B643aF6904fe2C54D2A934287d13BD3;
     //23 cards in the collection + the RGB one, 8 bit - up to 255 cards, in case of future expansion, change it to uint16
+
+    //The address whose private key you use to sign approvals
+    address public immutable signer;
 
     mapping(uint8 => string) public cardUri; //CardID to CardURI
 
@@ -45,7 +51,39 @@ contract YourContract is ERC1155, CardsContract, Ownable {
     }
 
     // Minting a single card, step by step reward
-    function mint(address to, uint256 id, uint256 amount, bytes memory data) public onlyOwner{
+    // track per‐user per‐card redemption
+    mapping(address => mapping(uint256 => bool)) public hasClaimed;
+
+    //Minting a single card, step by step reward
+    using ECDSA for bytes32;
+    function mint(bytes calldata signature, uint256 id) external {
+        require(id <= NUM_CARDS, "Invalid card ID");
+        require(!hasClaimed[msg.sender][id], "Already claimed");
+
+        bytes32 payload = keccak256(
+            abi.encodePacked(
+                address(this),             // this contract
+                block.chainid,             // network ID
+                msg.sender,                // who’s claiming
+                id                         // which card
+            )
+        );
+
+         bytes32 digest = keccak256(
+            abi.encodePacked(
+                "\x19Ethereum Signed Message:\n32",
+                payload
+            )
+        );
+        address recovered = ECDSA.recover(digest, signature);
+        require(recovered == signer, "Bad signature");
+
+        hasClaimed[msg.sender][id] = true;
+        _mint(msg.sender, id, 1, "");
+        emit CardMinted(id);
+    }
+
+    function oldMint(address to, uint256 id, uint256 amount, bytes memory data) public onlyOwner{
         require(id >= 0 && id <= NUM_CARDS, "Invalid card ID"); //Cards from 0 - the fool - to 21
         _mint(to, id, amount, data);
         emit CardMinted(id);
@@ -59,8 +97,8 @@ contract YourContract is ERC1155, CardsContract, Ownable {
 
     function createCard(uint8 cardId) public onlyOwner {
         require(cardId >= 0 && cardId <= NUM_CARDS, "Invalid card ID");
-        mint(tokenReceiver, cardId, 1, "");
-        emit CardCreated(cardId);
+        //mint(tokenReceiver, cardId, 1, "");
+        emit CardAssigned(cardId, tokenReceiver);
     }
 
      /**
