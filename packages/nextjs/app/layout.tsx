@@ -3,6 +3,7 @@
 
 // Usa questa direttiva per dichiarare il componente client-side
 import type { ReactNode } from "react";
+import AppWrapper from "./AppWrapper";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -10,6 +11,26 @@ import { WagmiProvider } from "wagmi";
 import { createConfig, http } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import "~~/styles/index.css";
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
 
 // app/layout.tsx
 
@@ -42,7 +63,7 @@ export const config = createConfig({
 // Crea l'istanza di QueryClient
 const queryClient = new QueryClient();
 
-export default function RootLayout({}: { children: ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
@@ -50,6 +71,7 @@ export default function RootLayout({}: { children: ReactNode }) {
           <QueryClientProvider client={queryClient}>
             <RainbowKitProvider theme={darkTheme()}>
               <ConnectButton />
+              <AppWrapper>{children}</AppWrapper>
             </RainbowKitProvider>
           </QueryClientProvider>
         </WagmiProvider>
