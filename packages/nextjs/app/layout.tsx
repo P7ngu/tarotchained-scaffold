@@ -5,8 +5,8 @@ import ClientProviders from "~~/app/ClientProvider";
 import "~~/styles/globals.css";
 
 export const metadata = {
-  title: "Game title",
-  description: "Built with 🏗 Scaffold-ETH 2",
+  title: "The Fool's Journey",
+  description: "A Journey of Self-Discovery and Freedom, tarot chained.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
