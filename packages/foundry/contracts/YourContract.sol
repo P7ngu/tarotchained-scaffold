@@ -72,6 +72,17 @@ contract YourContract is ERC1155, CardsContract, Ownable {
      * Function that allows the contract to receive ETH
      */
     receive() external payable { }
+
+    // Generate a random number between 1 and NUM_CARDS:
+    function generateRandomNumber() public view returns (uint) {
+        uint randNonce = 0;
+        uint random = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randNonce))) % NUM_CARDS;
+        randNonce++;
+        return random + 1;
+    }
+    //What this would do is take the timestamp of now, the msg.sender,
+    // and an incrementing nonce (a number that is only ever used once, so we don't run 
+    //the same hash function with the same input parameters twice).
 }
 
 
