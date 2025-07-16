@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     YourContract: {
-      address: "0x12975173b87f7595ee45dffb2ab812ece596bf84",
+      address: "0x29a79095352a718b3d7fe84e1f14e9f34a35598e",
       abi: [
         {
           type: "constructor",
@@ -21,10 +21,6 @@ const deployedContracts = {
           stateMutability: "nonpayable",
         },
         {
-          type: "receive",
-          stateMutability: "payable",
-        },
-        {
           type: "function",
           name: "NUM_CARDS",
           inputs: [],
@@ -36,6 +32,50 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "assignCardRandomly",
+          inputs: [
+            {
+              name: "to",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "assignFirstCard",
+          inputs: [
+            {
+              name: "to",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "assignSpecificCard",
+          inputs: [
+            {
+              name: "cardId",
+              type: "uint8",
+              internalType: "uint8",
+            },
+            {
+              name: "to",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -106,16 +146,16 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "createCard",
-          inputs: [
+          name: "generateRandomNumber",
+          inputs: [],
+          outputs: [
             {
-              name: "cardId",
+              name: "",
               type: "uint8",
               internalType: "uint8",
             },
           ],
-          outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -418,6 +458,25 @@ const deployedContracts = {
         },
         {
           type: "event",
+          name: "CardAssigned",
+          inputs: [
+            {
+              name: "cardId",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "to",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
           name: "CardCreated",
           inputs: [
             {
@@ -702,7 +761,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1752669617.json",
+      deploymentFile: "run-1752684129.json",
       deploymentScript: "Deploy.s.sol",
     },
   },

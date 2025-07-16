@@ -3,6 +3,13 @@ pragma solidity ^0.8.19;
 
 import "./DeployHelpers.s.sol";
 import "../contracts/YourContract.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract MockUSDC is ERC20 {
+    constructor() ERC20("Mock USDC", "USDC") {
+        _mint(msg.sender, 1_000_000); // Mint some USDC to sender
+    }
+}
 
 /**
  * @notice Deploy script for YourContract contract
@@ -24,7 +31,18 @@ contract DeployYourContract is ScaffoldETHDeploy {
      *      - Setup correct `deployer` account and fund it
      *      - Export contract addresses & ABIs to `nextjs` packages
      */
+    YourContract public cardsContract;
+
+    
     function run() external ScaffoldEthDeployerRunner {
-        new YourContract("ipfs://bafkreifu7wfdmwaiazl4xzpjdmvyt3cijzv3uzgyzq7wwanzgqfcruuqf4");
+        cardsContract = new YourContract("ipfs://bafkreifu7wfdmwaiazl4xzpjdmvyt3cijzv3uzgyzq7wwanzgqfcruuqf4");
+
+        MockUSDC usdc = new MockUSDC();
+        usdc.transfer(msg.sender, 1000000);
+
+        usdc.approve(address(cardsContract), 3e12);
+        cardsContract.setTokenReceiver(address(usdc));
+
+        cardsContract.assignFirstCard(deployer);
     }
 }
