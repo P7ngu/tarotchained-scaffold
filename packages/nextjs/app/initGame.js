@@ -9,6 +9,11 @@ export default function initGame() {
 
     k.loadSprite("tarotDesk", "./tarotDesk.png");
     k.loadSprite("background", "./background.png");
+    k.loadSprite("omino", "./omino.png");
+   k.loadSprite("butcher", "./butcher.png");
+   k.loadSprite("blackShop", "./blackShop.png");
+
+
     //TODO: change the character
     k.loadSprite("characters", "./characters.png",{
         sliceY: 2, 
@@ -25,8 +30,9 @@ export default function initGame() {
         },
     });
 
-    k.add([k.sprite("background"), k.pos(0, 0), k.scale(0.75)]);
-
+    k.add([k.sprite("background"), k.pos(0, 0), k.scale(1)]);
+    k.add([k.sprite("butcher"), k.pos(0, 0), k.scale(1)]);
+    k.add([k.sprite("blackShop"), k.pos(2000, 200), k.scale(0.25)]);
 
     const player = k.add([
         k.sprite("characters", {anim: "down-idle"}),
@@ -43,11 +49,12 @@ export default function initGame() {
 ]);
 
 
+
     const shop = k.add([
         k.sprite("tarotDesk"),
-        k.pos(600, 450),
+        k.pos(1500, 450),
         k.anchor("center"),
-        k.scale(0.2),
+        k.scale(0.3),
         k.area(),
         k.body({ isStatic: true }), 
         "shop",

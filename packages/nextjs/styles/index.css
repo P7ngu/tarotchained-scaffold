@@ -13,8 +13,8 @@ the global syle called init to differentiate from globals.css in order to keep t
 }
 
 :root {
-  --width: 1920;
-  --height: 1080;
+  --width: 2560;
+  --height: 1440;
   --font-color: #ffffff;
 }
 
