@@ -1,12 +1,14 @@
 //handles the entire game logic and physics 
 import initKaplay from "~~/app/kaplayContext.js";
+import { store, textBoxContentAtom, isTextBoxVisibleAtom } from "~~/app/store/store.js";
+
 
 export default function initGame() {
     const k = initKaplay();
     const DIAGONAL_FACTOR = 1/ Math.sqrt(2);
 
-    k.loadSprite("background", "./background.png");
     k.loadSprite("tarotDesk", "./tarotDesk.png");
+    k.loadSprite("background", "./background.png");
     //TODO: change the character
     k.loadSprite("characters", "./characters.png",{
         sliceY: 2, 
@@ -23,22 +25,8 @@ export default function initGame() {
         },
     });
 
-    k.add([k.sprite("background"), k.pos(0, -70), k.scale(8)]);
+    k.add([k.sprite("background"), k.pos(0, 0), k.scale(0.75)]);
 
-    const shop = k.add([
-        k.sprite("tarotDesk"),
-        k.pos(600, 450),
-        k.anchor("center"),
-        k.scale(0.25),
-        k.area(),
-        k.body({ isStatic: true }), 
-        "shop",
-    ]);
-
-    shop.onCollide("player", (player) => {
-        console.log("player entered shop");
-        //TODO: write the actual collision
-    });
 
     const player = k.add([
         k.sprite("characters", {anim: "down-idle"}),
@@ -53,6 +41,23 @@ export default function initGame() {
             direction: k.vec2(0,0), 
         },
 ]);
+
+
+    const shop = k.add([
+        k.sprite("tarotDesk"),
+        k.pos(600, 450),
+        k.anchor("center"),
+        k.scale(0.2),
+        k.area(),
+        k.body({ isStatic: true }), 
+        "shop",
+    ]);
+
+    shop.onCollide("player", (player) => {
+        console.log("player entered shop");
+        store.set(textBoxContentAtom, "Benvenuto nella mia bottega!");
+        
+    });
 
 
 player.onUpdate(() => {
@@ -110,5 +115,9 @@ if (player.direction.x && player.direction.y) {
 }
 player.move(player.direction.scale(player.speed));
 });
+
+ 
+store.set(isTextBoxVisibleAtom, true);  
+
 
 }

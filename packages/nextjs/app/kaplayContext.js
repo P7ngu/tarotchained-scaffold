@@ -8,7 +8,7 @@ export default function initKaplay() {
         letterbox: true,
         global: false, 
         debug: true, //TODO: rimettere false in production
-        debugKey: "Meta+N+M", // Meta = Cmd su Mac
+        debugKey: "Meta + U", // Meta = Cmd su Mac
         pixelDensity: devicePixelRatio,
     });
 }
