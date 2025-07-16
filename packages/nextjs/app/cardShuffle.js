@@ -8,76 +8,85 @@ import { isTextBoxVisibleAtom, store, textBoxContentAtom } from "~~/app/store/st
 export default async function cardShuffle() {
   const k = initKaplay();
 
+  // === Button setup: create once per page load ===
+  if (typeof document !== 'undefined' && !document.getElementById('restartShuffle')) {
+    const btn = document.createElement('button');
+    btn.id = 'restartShuffle';
+    btn.textContent = 'Restart Shuffle';
+    // ensure it's on top of any canvas
+    Object.assign(btn.style, {
+      position: 'absolute',
+      top: '20px',
+      right: '20px',
+      padding: '10px 20px',
+      zIndex: '1000',
+      fontSize: '16px',
+      cursor: 'pointer',
+    });
+    document.body.appendChild(btn);
+    btn.addEventListener('click', () => {
+      // simply restart the shuffle
+      cardShuffle();
+    });
+  }
+
+  // Optionally clear existing sprites if Kaplay supports it
+  // if (k.clear) k.clear();
+
+  // Load back textures
   await k.loadSprite("cardBack0", "/cardBack.png");
   await k.loadSprite("cardBack1", "/cardBack.png");
   await k.loadSprite("cardBack2", "/cardBack.png");
 
-  
-for (let i = 0; i < 3; i++) {
-  const cardBack = k.add([
-    k.sprite("cardBack" + i),
-    k.pos(600 + 350 * i, 450),
-    k.anchor("center"),
-    k.scale(0.5),
-    k.area(),
-    k.body({ isStatic: true }), 
-    "cardBack" + i.toString(),
-]);
-}
+  // Create card entities (reset positions)
+  for (let i = 0; i < 3; i++) {
+    k.add([
+      k.sprite("cardBack" + i),
+      k.pos(600 + 350 * i, 450),
+      k.anchor("center"),
+      k.scale(0.5),
+      k.area(),
+      k.body({ isStatic: true }),
+      "cardBack" + i
+    ]);
+  }
 
-   // === Animation block starts here ===
-
-  // 1. Grab each card by its tag
+  // Animation block
   const cards = [
     k.get("cardBack0")[0],
     k.get("cardBack1")[0],
-    k.get("cardBack2")[0],
+    k.get("cardBack2")[0]
   ];
+  const homeX = [600, 950, 1300];
 
-  // 2. Hop each card up and down
+  // Hop up/down
   for (let i = 0; i < cards.length; i++) {
-    const card = cards[i];
-    const start = card.pos;                    // this is a Vec2
-    const upPos = k.vec2(start.x, 400);       // build another Vec2
-
-    // tween from start → upPos over 0.3s, reassigning to card.pos each frame
-    k.tween(start, upPos, 0.3, (v) => {
-      card.pos = v;
-    });                                       
-    await k.wait(350);
-
-    const downPos = k.vec2(start.x, 450);
-    k.tween(card.pos, downPos, 0.3, (v) => {
-      card.pos = v;
-    });
-    await k.wait(350);
+    await animateHop(k, cards[i], homeX[i]);
   }
 
-  // 3. Simple swap‐shuffle of their x’s
-  const positions = [600, 950, 1300];
+  // Shuffle swaps
   for (let n = 0; n < 4; n++) {
     let a = Math.floor(Math.random() * 3);
     let b;
     do { b = Math.floor(Math.random() * 3); } while (b === a);
 
-    const cardA = cards[a];
-    const cardB = cards[b];
-
-    const posA = cardA.pos;
-    const posB = cardB.pos;
-    const targetA = k.vec2(positions[b], posA.y);
-    const targetB = k.vec2(positions[a], posB.y);
-
-    k.tween(posA, targetA, 0.3, (v) => {
-      cardA.pos = v;
-    });
-    k.tween(posB, targetB, 0.3, (v) => {
-      cardB.pos = v;
-    });
-    await k.wait(350);
-
-    // swap in our local array so future swaps know who’s where
+    await animateSwap(k, cards[a], cards[b], homeX[b], homeX[a]);
     [cards[a], cards[b]] = [cards[b], cards[a]];
+    [homeX[a], homeX[b]] = [homeX[b], homeX[a]];
   }
-  // === Animation block ends here ===
+}
+
+// Helper: hop animation
+async function animateHop(k, card, x) {
+  k.tween(card.pos, k.vec2(x, 400), 0.3, (v) => { card.pos = v; });
+  await k.wait(350);
+  k.tween(card.pos, k.vec2(x, 450), 0.3, (v) => { card.pos = v; });
+  await k.wait(350);
+}
+
+// Helper: swap two cards on X-axis
+async function animateSwap(k, cardA, cardB, targetAX, targetBX) {
+  k.tween(cardA.pos, k.vec2(targetAX, 450), 0.3, (v) => { cardA.pos = v; });
+  k.tween(cardB.pos, k.vec2(targetBX, 450), 0.3, (v) => { cardB.pos = v; });
+  await k.wait(350);
 }
