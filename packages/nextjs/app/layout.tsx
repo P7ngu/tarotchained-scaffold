@@ -1,24 +1,81 @@
-import "@rainbow-me/rainbowkit/styles.css";
-import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
-import { ThemeProvider } from "~~/components/ThemeProvider";
-import "~~/styles/globals.css";
-import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
+// app/layout.tsx
+"use client";
 
-export const metadata = getMetadata({
-  title: "Scaffold-ETH 2 App",
-  description: "Built with 🏗 Scaffold-ETH 2",
+// Usa questa direttiva per dichiarare il componente client-side
+import type { ReactNode } from "react";
+import AppWrapper from "./AppWrapper";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import { createConfig, http } from "wagmi";
+import { mainnet, sepolia } from "wagmi/chains";
+import "~~/styles/index.css";
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+export const config = createConfig({
+  chains: [mainnet, sepolia],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+  },
 });
 
-const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
+// Crea l'istanza di QueryClient
+const queryClient = new QueryClient();
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html suppressHydrationWarning className={``}>
+    <html lang="en">
       <body>
-        <ThemeProvider enableSystem>
-          <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
-        </ThemeProvider>
+        <WagmiProvider config={config} reconnectOnMount={false}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider theme={darkTheme()}>
+              <ConnectButton />
+              <AppWrapper>{children}</AppWrapper>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
       </body>
     </html>
   );
-};
-
-export default ScaffoldEthApp;
+}
