@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     YourContract: {
-      address: "0xf7cd8fa9b94db2aa972023b379c7f72c65e4de9d",
+      address: "0x12975173b87f7595ee45dffb2ab812ece596bf84",
       abi: [
         {
           type: "constructor",
@@ -109,7 +109,7 @@ const deployedContracts = {
           name: "createCard",
           inputs: [
             {
-              name: "id",
+              name: "cardId",
               type: "uint8",
               internalType: "uint8",
             },
@@ -199,7 +199,7 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "myTestWallet",
+          name: "owner",
           inputs: [],
           outputs: [
             {
@@ -209,6 +209,13 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "renounceOwnership",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -296,6 +303,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "setTokenReceiver",
+          inputs: [
+            {
+              name: "_tokenReceiver",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
           name: "supportsInterface",
           inputs: [
             {
@@ -312,6 +332,32 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenReceiver",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "transferOwnership",
+          inputs: [
+            {
+              name: "newOwner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -392,6 +438,25 @@ const deployedContracts = {
               type: "uint256",
               indexed: false,
               internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferred",
+          inputs: [
+            {
+              name: "previousOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "newOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
             },
           ],
           anonymous: false,
@@ -613,9 +678,31 @@ const deployedContracts = {
             },
           ],
         },
+        {
+          type: "error",
+          name: "OwnableInvalidOwner",
+          inputs: [
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "OwnableUnauthorizedAccount",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1752669054.json",
+      deploymentFile: "run-1752669617.json",
       deploymentScript: "Deploy.s.sol",
     },
   },

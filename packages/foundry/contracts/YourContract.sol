@@ -14,19 +14,23 @@ interface CardsContract {
 
 }
 
-contract YourContract is ERC1155, CardsContract {
+contract YourContract is ERC1155, CardsContract, Ownable {
     uint8 public constant NUM_CARDS = 22; 
-    address public myTestWallet = 0xc34460FF8B643aF6904fe2C54D2A934287d13BD3;
+    address public tokenReceiver = 0xc34460FF8B643aF6904fe2C54D2A934287d13BD3;
     //23 cards in the collection + the RGB one, 8 bit - up to 255 cards, in case of future expansion, change it to uint16
 
     mapping(uint8 => string) public cardUri; //CardID to CardURI
 
     constructor(string memory uri_)
      ERC1155(uri_)
-     //Ownable(msg.sender) 
+     Ownable(msg.sender) 
     {
         setupUrisForTesting();
         createCard(0); //Minting the BW card as the first one
+    }
+
+    function setTokenReceiver(address _tokenReceiver) public onlyOwner {
+        tokenReceiver = _tokenReceiver;
     }
 
     function setupUrisForTesting () private {
@@ -41,22 +45,22 @@ contract YourContract is ERC1155, CardsContract {
     }
 
     // Minting a single card, step by step reward
-    function mint(address to, uint256 id, uint256 amount, bytes memory data) public {
+    function mint(address to, uint256 id, uint256 amount, bytes memory data) public onlyOwner{
         require(id >= 0 && id <= NUM_CARDS, "Invalid card ID"); //Cards from 0 - the fool - to 21
         _mint(to, id, amount, data);
         emit CardMinted(id);
     }
 
     // Minting a batch of cards, when the user logs in and has to be given all the rewards so far
-    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data) public {
+    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data) public onlyOwner{
         _mintBatch(to, ids, amounts, data);
         emit BatchCardsMinted(ids);
     }
 
-    function createCard(uint8 id) public {
-        require(id >= 0 && id <= NUM_CARDS, "Invalid card ID");
-        mint(myTestWallet, id, 1, "");
-        emit CardCreated(id);
+    function createCard(uint8 cardId) public onlyOwner {
+        require(cardId >= 0 && cardId <= NUM_CARDS, "Invalid card ID");
+        mint(tokenReceiver, cardId, 1, "");
+        emit CardCreated(cardId);
     }
 
      /**
