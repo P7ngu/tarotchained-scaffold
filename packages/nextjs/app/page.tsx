@@ -38,6 +38,13 @@ const Home: NextPage = () => {
               packages/hardhat/contracts
             </code>
           </p>
+          <div className="mt-8 flex justify-center">
+            <Link href="/game" passHref>
+              <button className="bg-primary hover:bg-primary-focus text-white text-2xl font-bold py-4 px-8 rounded-full shadow-lg transition">
+                Start Game
+              </button>
+            </Link>
+          </div>
         </div>
 
         <div className="grow bg-base-300 w-full mt-16 px-8 py-12">
