@@ -34,6 +34,7 @@ export default function AppWrapper({ children }: { children: ReactNode }) {
     initPrologue();
   }, []);
 
+  //TODO: THIS IS ONLY FOR DEBUG PURPOSE, REMOVE IT!!!
   if (2 < 1) {
     initGame();
   }
