@@ -1,0 +1,1 @@
+//the textbox of the game where messages are displayed
