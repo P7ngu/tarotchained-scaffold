@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { Provider } from "jotai";
 import initGame from "~~/app/initGame.js";
+import initPrologue from "~~/app/initPrologue.js";
 import ReactUI from "~~/app/reactUI.jsx";
 import { store } from "~~/app/store/store.js";
 
@@ -30,8 +31,12 @@ export default function AppWrapper({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    initGame();
+    initPrologue();
   }, []);
+
+  if (2 < 1) {
+    initGame();
+  }
 
   return (
     <Provider store={store}>
