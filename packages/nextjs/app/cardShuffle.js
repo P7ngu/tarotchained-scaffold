@@ -39,8 +39,8 @@ export default async function cardShuffle() {
         border: 1px solid #ccc;
         border-radius: 12px;
         position: absolute;
-        animation-duration: 12s;
-        animation-delay: 2s;
+        animation-duration: 6s;
+        animation-delay: 1s;
         animation-timing-function: ease;
         animation-iteration-count: infinite;
         box-shadow: 4px 4px 8px rgba(180,181,185,0.5);
@@ -127,8 +127,7 @@ export default async function cardShuffle() {
     });
 
     // Hide overlay
-    overlay.querySelector("#closeOverlay")
-           .addEventListener("click", () => {
+    overlay.querySelector("#closeOverlay").addEventListener("click", () => {
       overlay.style.display = "none";
     });
   }
