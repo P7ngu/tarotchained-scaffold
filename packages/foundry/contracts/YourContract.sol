@@ -1,79 +1,68 @@
-//SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity ^0.8.4;
 
-// Useful for debugging. Remove when deploying to a live network.
-import "forge-std/console.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+//Using 1155 instead of 721, it can be later expanded + can work with batches + works with our collection of cards
 
-// Use openzeppelin to inherit battle-tested implementations (ERC20, ERC721, etc)
-// import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-/**
- * A smart contract that allows changing a state variable of the contract and tracking the changes
- * It also allows the owner to withdraw the Ether in the contract
- * @author BuidlGuidl
- */
-contract YourContract {
-    // State Variables
-    address public immutable owner;
-    string public greeting = "Building Unstoppable Apps!!!";
-    bool public premium = false;
-    uint256 public totalCounter = 0;
-    mapping(address => uint256) public userGreetingCounter;
+interface CardsContract {
+    error CardsDoesntExist(uint cardId);
+    error Failed(uint cardId);
+    event CardMinted(uint cardId);
+    event BatchCardsMinted(uint[] cardIds);
+    event CardCreated(uint cardId);
 
-    // Events: a way to emit log statements from smart contract that can be listened to by external parties
-    event GreetingChange(address indexed greetingSetter, string newGreeting, bool premium, uint256 value);
+}
 
-    // Constructor: Called once on contract deployment
-    // Check packages/foundry/deploy/Deploy.s.sol
-    constructor(address _owner) {
-        owner = _owner;
+contract YourContract is ERC1155, CardsContract {
+    uint8 public constant NUM_CARDS = 22; 
+    address public myTestWallet = 0x64EB33028307e6E796d03635EE8963E1aa6be36F;
+    //23 cards in the collection + the RGB one, 8 bit - up to 255 cards, in case of future expansion, change it to uint16
+
+    mapping(uint8 => string) public cardUri; //CardID to CardURI
+
+    constructor(string memory uri_)
+     ERC1155(uri_)
+     //Ownable(msg.sender) 
+    {
+        setupUrisForTesting();
+        createCard(0); //Minting the BW card as the first one
     }
 
-    // Modifier: used to define a set of rules that must be met before or after a function is executed
-    // Check the withdraw() function
-    modifier isOwner() {
-        // msg.sender: predefined variable that represents address of the account that called the current function
-        require(msg.sender == owner, "Not the Owner");
-        _;
+    function setupUrisForTesting () private {
+        //Must change this to be scalable and remove extra gas cost
+        cardUri[0]  = "ipfs://bafkreifu7wfdmwaiazl4xzpjdmvyt3cijzv3uzgyzq7wwanzgqfcruuqf4";
+    }
+     //Override ERC-1155’s URI lookup to use mapping, we must use uint256 here, but the func is view only
+    function uri(uint256 id) public view override returns (string memory) {
+        require(id <= NUM_CARDS, "Invalid card ID");
+        uint8 key = uint8(id); //Casting uint256 to uint8, for our mapping to require less space and gas cost
+        return cardUri[key];
     }
 
-    /**
-     * Function that allows anyone to change the state variable "greeting" of the contract and increase the counters
-     *
-     * @param _newGreeting (string memory) - new greeting to save on the contract
-     */
-    function setGreeting(string memory _newGreeting) public payable {
-        // Print data to the anvil chain console. Remove when deploying to a live network.
-
-        console.logString("Setting new greeting");
-        console.logString(_newGreeting);
-
-        greeting = _newGreeting;
-        totalCounter += 1;
-        userGreetingCounter[msg.sender] += 1;
-
-        // msg.value: built-in global variable that represents the amount of ether sent with the transaction
-        if (msg.value > 0) {
-            premium = true;
-        } else {
-            premium = false;
-        }
-
-        // emit: keyword used to trigger an event
-        emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, msg.value);
+    // Minting a single card, step by step reward
+    function mint(address to, uint256 id, uint256 amount, bytes memory data) public {
+        require(id >= 0 && id <= NUM_CARDS, "Invalid card ID"); //Cards from 0 - the fool - to 21
+        _mint(to, id, amount, data);
+        emit CardMinted(id);
     }
 
-    /**
-     * Function that allows the owner to withdraw all the Ether in the contract
-     * The function can only be called by the owner of the contract as defined by the isOwner modifier
-     */
-    function withdraw() public isOwner {
-        (bool success,) = owner.call{ value: address(this).balance }("");
-        require(success, "Failed to send Ether");
+    // Minting a batch of cards, when the user logs in and has to be given all the rewards so far
+    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data) public {
+        _mintBatch(to, ids, amounts, data);
+        emit BatchCardsMinted(ids);
     }
 
-    /**
+    function createCard(uint8 id) public {
+        require(id >= 0 && id <= NUM_CARDS, "Invalid card ID");
+        mint(myTestWallet, id, 1, "");
+        emit CardCreated(id);
+    }
+
+     /**
      * Function that allows the contract to receive ETH
      */
     receive() external payable { }
 }
+
+
