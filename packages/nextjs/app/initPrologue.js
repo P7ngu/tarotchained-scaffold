@@ -195,7 +195,7 @@ export default function initPrologue() {
         function handleKeyPress(e) {
             if (e.code === "Enter") {
                 if (step == 0){
-                    store.set(textBoxContentAtom, "Who put this box in here? I want to check.");
+                    store.set(textBoxContentAtom, "Who put this chest in here? I want to check.");
                     step++;
                 }else if (step == 1){
                     store.set(isTextBoxVisibleAtom, false);
@@ -206,6 +206,8 @@ export default function initPrologue() {
                         k.anchor("center"),
                         "chest",
                     ]);
+                    store.set(textBoxContentAtom, "I need to check more closely");
+                    store.set(isTextBoxVisibleAtom, true);
 
                     step++;
                 } else if (step == 2){

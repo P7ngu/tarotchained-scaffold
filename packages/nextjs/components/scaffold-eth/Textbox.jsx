@@ -59,8 +59,8 @@ export default function TextBox(){
             onAnimationComplete={handleAnimationComplete}
           >
             <p>{content}</p>
-            <p className="click-enter-hint">ANNIBALE BARCA</p>
           </motion.div>
+          <p className="click-enter-hint">Click enter to continue...</p>
         </>
         )
     );

@@ -35,7 +35,7 @@ body {
   left: 50%;
   width: var(--width); 
   height: var(--height);
-  transform: translate(-50%, -50%) scale(var(--scale, 1)); 
+  transform: translate(-50%, -50%) scale(var(--scale, 0.5)); 
   transform-origin: center;
   box-sizing: border-box;
   z-index: 10;
