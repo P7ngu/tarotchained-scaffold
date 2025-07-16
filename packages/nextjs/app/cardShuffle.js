@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 import { createRoot } from "react-dom/client";
-
+import initKaplay from "~~/app/kaplayContext.js";
 import WalletOverlay from "~~/components/scaffold-eth/WalletOverlay";
 
 export default async function cardShuffle() {
