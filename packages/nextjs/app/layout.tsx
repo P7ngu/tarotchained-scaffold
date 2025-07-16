@@ -1,15 +1,58 @@
 // app/layout.tsx
+"use client";
+
+// Usa questa direttiva per dichiarare il componente client-side
 import type { ReactNode } from "react";
-import AppWrapper from "~~/app/AppWrapper";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import { createConfig, http } from "wagmi";
+import { mainnet, sepolia } from "wagmi/chains";
 import "~~/styles/index.css";
 
-//import { ScaffoldEthAppWithProviders } from "~~/components/scaffold-eth/ScaffoldEthAppWithProviders";
+// app/layout.tsx
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+// app/layout.tsx
+
+export const config = createConfig({
+  chains: [mainnet, sepolia],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+  },
+});
+
+// Crea l'istanza di QueryClient
+const queryClient = new QueryClient();
+
+export default function RootLayout({}: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <AppWrapper>{children}</AppWrapper>
+        <WagmiProvider config={config} reconnectOnMount={false}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider theme={darkTheme()}>
+              <ConnectButton />
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
       </body>
     </html>
   );
