@@ -11,6 +11,11 @@ export default function initGame() {
     k.loadSprite("tarotDesk", "./tarotDesk.png");
     k.loadSprite("background", "./background.png");
     k.loadSprite("blackShop", "./blackShop.png");
+    k.loadSprite("butcher", "./butcher.png");
+    k.loadSprite("campfire", "./campfire.png");
+    k.loadSprite("orangeShop", "./orangeShop.png");
+    k.loadSprite("well", "./well.png");
+    k.loadSprite("terrain", "./terrain.png");
     k.loadSprite("characters", "./characters.png",{
         sliceY: 2, 
         sliceX: 8, 
@@ -46,9 +51,9 @@ export default function initGame() {
 
     const shop = k.add([
         k.sprite("tarotDesk"),
-        k.pos(1500, 450),
+        k.pos(1350, 430),
         k.anchor("center"),
-        k.scale(0.3),
+        k.scale(0.32),
         k.area(),
         k.body({ isStatic: true }), 
         "shop",
@@ -69,6 +74,56 @@ export default function initGame() {
         k.area(),
         k.body({ isStatic: true }), 
         "blackShop",
+    ]);
+
+      const orangeShop = k.add([
+        k.sprite("orangeShop"),
+        k.pos(500, 1180),
+        k.anchor("center"),
+        k.scale(0.25),
+        k.area(),
+        k.body({ isStatic: true }), 
+        "orangeShop",
+    ]);
+
+     const butcher = k.add([
+        k.sprite("butcher"),
+        k.pos(760, 410),
+        k.anchor("center"),
+        k.scale(0.25),
+        k.area(),
+        k.body({ isStatic: true }), 
+        "butcher",
+    ]);
+
+      const campfire = k.add([
+        k.sprite("campfire"),
+        k.pos(360, 560),
+        k.anchor("center"),
+        k.scale(0.23),
+        k.area(),
+        k.body({ isStatic: true }), 
+        "campfire",
+    ]);
+
+    const well = k.add([
+        k.sprite("well"),
+        k.pos(1800, 900),
+        k.anchor("center"),
+        k.scale(0.25),
+        k.area(),
+        k.body({ isStatic: true }), 
+        "well",
+    ]);
+
+    const terrain = k.add([
+        k.sprite("terrain"),
+        k.pos(2050, 1100),
+        k.anchor("center"),
+        k.scale(0.22),
+        k.area(),
+        k.body({ isStatic: true }), 
+        "terrain",
     ]);
 
 player.onUpdate(() => {
