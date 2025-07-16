@@ -1,17 +1,14 @@
-import "@rainbow-me/rainbowkit/styles.css";
-import "~~/styles/globals.css";
+// app/layout.tsx
+import type { ReactNode } from "react";
+import AppWrapper from "~~/app/AppWrapper";
+import "~~/styles/index.css";
 
-//use this as an entry point
-
-const ScaffoldEthApp = () => {
-  //in questo return c'è la root del sito
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <body>
-        <div>blablabla</div>
+        <AppWrapper>{children}</AppWrapper>
       </body>
     </html>
   );
-};
-
-export default ScaffoldEthApp;
+}
