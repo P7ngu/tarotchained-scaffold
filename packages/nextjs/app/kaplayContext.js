@@ -1,1 +1,14 @@
 //creates a context everywhere that you can pass as a parameter
+import kaplay from "kaplay";
+
+export default function initKaplay() {
+    return kaplay({
+        width: 1920, //TODO: fix the resolution
+        height: 1080,
+        letterbox: true,
+        global: false, 
+        debug: true, //TODO: rimettere false in production
+        debugKey: "Meta+N+M", // Meta = Cmd su Mac
+        pixelDensity: devicePixelRatio,
+    });
+}
