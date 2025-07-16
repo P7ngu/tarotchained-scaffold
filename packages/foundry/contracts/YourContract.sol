@@ -16,7 +16,6 @@ interface CardsContract {
 
 contract YourContract is ERC1155, CardsContract, Ownable {
     uint8 public constant NUM_CARDS = 22; //0 to 22 = 23 cards
-   
     //23 cards in the collection + the RGB one, 8 bit - up to 255 cards, in case of future expansion, change it to uint16
 
     mapping(uint8 => string) public cardUri; //CardID to CardURI
@@ -26,7 +25,7 @@ contract YourContract is ERC1155, CardsContract, Ownable {
     function setTokenReceiver(address _tokenReceiver) public onlyOwner {
         tokenReceiver = _tokenReceiver;
     }
-     //End of debug stuff
+    //End of debug stuff
 
     constructor(string memory uri_)
      ERC1155(uri_)
@@ -50,14 +49,14 @@ contract YourContract is ERC1155, CardsContract, Ownable {
     }
 
     // Minting a single card, step by step reward
-    function mint(address to, uint256 id, uint256 amount, bytes memory data) public onlyOwner{
+    function mint(address to, uint256 id, uint256 amount, bytes memory data) public {
         require(id >= 0 && id <= NUM_CARDS, "Invalid card ID"); //Cards from 0 - the fool - to 21
         _mint(to, id, amount, data);
         emit CardMinted(id);
     }
 
     // Minting a batch of cards, when the user logs in and has to be given all the rewards so far
-    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data) public onlyOwner{
+    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data) public {
         _mintBatch(to, ids, amounts, data);
         emit BatchCardsMinted(ids);
     }
