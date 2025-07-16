@@ -3,8 +3,8 @@ import kaplay from "kaplay";
 
 export default function initKaplay() {
     return kaplay({
-        width: 1920, //TODO: fix the resolution
-        height: 1080,
+        width: 2560,
+        height: 1440,
         letterbox: true,
         global: false, 
         debug: true, //TODO: rimettere false in production
