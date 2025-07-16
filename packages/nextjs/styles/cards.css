@@ -1,0 +1,164 @@
+body {
+	background-color: #f7f7f7;
+}
+.stack {
+	position: relative;
+	margin-top: 50vh;
+	margin-left: 50vw;
+	transform: translate(-50%,-50%);
+	width: 340px;
+	height: 440px;
+}
+.card {
+	width: 300px;
+	height: 400px;
+	background-color: white;
+	background: linear-gradient(to bottom, rgba(235,236,240,1) 0%,rgba(255,255,255,1) 60%);
+	border: 1px solid #ccc;
+	border-radius: 12px;
+	position: absolute;
+	transform: translateY(0);
+	animation: onTop 12s 2s ease infinite;
+	box-shadow: 4px 4px 8px rgba(180,181,185,.5)
+}
+.card.one {
+	left: 0;
+	top: 0;
+	z-index: 2;
+	animation-name: onTop;
+}
+.card.two {
+	left: 20px;
+	top: 20px;
+	z-index: 1;
+	animation-name: onMiddle;
+}
+.card.three {
+	left: 40px;
+	top: 40px;
+	z-index: 0;
+	animation-name: onBottom;
+}
+.card span {
+	font-size: 24px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", Verdana, "sans-serif";
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+@keyframes onTop {
+  5% {
+    transform: translateY(-300px);
+    z-index: 1;
+    left: 20px;
+    top: 20px;
+  }
+  10% {
+    transform: translateY(0);
+    z-index: 0;
+    left: 40px;
+    top: 40px;
+  }
+  40% {
+    transform: translateY(0);
+    z-index: 0;
+    left: 40px;
+    top: 40px;
+  }
+  50% {
+    transform: translateY(0);
+    z-index: 1;
+    left: 20px;
+    top: 20px;
+  }
+  70% {
+    transform: translateY(0);
+    z-index: 1;
+    left: 20px;
+    top: 20px;
+  }
+  80% {
+    transform: translateY(0);
+    z-index: 2;
+    left: 0;
+    top: 0;
+  }
+}
+@keyframes onMiddle {
+  10% {
+    transform: translateY(0);
+    z-index: 2;
+    left: 0;
+    top: 0;
+  }
+  40% {
+    transform: translateY(0);
+    z-index: 2;
+    left: 0;
+    top: 0;
+  }
+  45% {
+    transform: translateY(-300px);
+    z-index: 1;
+    left: 20px;
+    top: 20px;
+  }
+  50% {
+    transform: translateY(0);
+    z-index: 0;
+    left: 40px;
+    top: 40px;
+  }
+  70% {
+    transform: translateY(0);
+    z-index: 0;
+    left: 40px;
+    top: 40px;
+  }
+  80% {
+    transform: translateY(0);
+    z-index: 1;
+    left: 20px;
+    top: 20px;
+  }
+}
+@keyframes onBottom {
+  10% {
+    transform: translateY(0);
+    z-index: 0;
+    left: 20px;
+    top: 20px;
+  }
+  40% {
+    transform: translateY(0);
+    z-index: 1;
+    left: 20px;
+    top: 20px;
+  }
+  50% {
+    transform: translateY(0);
+    z-index: 2;
+    left: 0;
+    top: 0;
+  }
+  70% {
+    transform: translateY(0);
+    z-index: 2;
+    left: 0;
+    top: 0;
+  }
+  75% {
+    transform: translateY(-300px);
+    z-index: 1;
+    left: 20px;
+    top: 20px;
+  }
+  80% {
+    transform: translateY(0);
+    z-index: 0;
+    left: 40px;
+    top: 40px;
+  }
+}

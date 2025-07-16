@@ -1,19 +1,56 @@
 import initKaplay from "~~/app/kaplayContext.js";
 import { isTextBoxVisibleAtom, store, textBoxContentAtom } from "~~/app/store/store.js";
 
-
 export default async function cardShuffle() {
-  // Use a single Kaplay context so animations accumulate
+  // Initialize Kaplay once
   if (!window._kaplayInstance) {
     window._kaplayInstance = initKaplay();
   }
   const k = window._kaplayInstance;
 
-  // === Button setup: only once per load ===
-  if (typeof document !== 'undefined' && !document.getElementById('restartShuffle')) {
+  // Inject overlay CSS once
+  if (!document.getElementById('overlayStyles')) {
+    const style = document.createElement('style');
+    style.id = 'overlayStyles';
+    style.textContent = `
+      body { background-color: #f7f7f7; }
+      #htmlOverlay { 
+        position: fixed; top:0; left:0; width:100vw; height:100vh;
+        background: rgba(0,0,0,0.7); display:none;
+        align-items:center; justify-content:center; z-index:2000;
+      }
+      .stack {
+        position: relative; margin: auto;
+        width: 340px; height: 440px;
+      }
+      .card {
+        width: 300px; height: 400px;
+        background: linear-gradient(to bottom, rgba(235,236,240,1) 0%,rgba(255,255,255,1) 60%);
+        border: 1px solid #ccc; border-radius: 12px;
+        position: absolute; animation: onTop 12s 2s ease infinite;
+        box-shadow: 4px 4px 8px rgba(180,181,185,.5);
+      }
+      .card.one { left: 0; top: 0; z-index: 2; animation-name: onTop; }
+      .card.two { left: 20px; top: 20px; z-index: 1; animation-name: onMiddle; }
+      .card.three { left: 40px; top: 40px; z-index: 0; animation-name: onBottom; }
+      .card span {
+        font-size: 24px; font-family: "Lucida Grande",sans-serif;
+        position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      }
+      @keyframes onTop {
+        /* ... copy your full keyframes here ... */
+      }
+      @keyframes onMiddle { /* ... */ }
+      @keyframes onBottom { /* ... */ }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Create Start button only once
+  if (!document.getElementById('startShuffle')) {
     const btn = document.createElement('button');
-    btn.id = 'restartShuffle';
-    btn.textContent = 'Restart Shuffle';
+    btn.id = 'startShuffle';
+    btn.textContent = 'Start Shuffle';
     Object.assign(btn.style, {
       position: 'absolute',
       top: '20px',
@@ -24,100 +61,27 @@ export default async function cardShuffle() {
       cursor: 'pointer',
     });
     document.body.appendChild(btn);
-    btn.addEventListener('click', () => {
-      cardShuffle();
-    });
+
+    // Overlay container (hidden by default)
+    const overlay = document.createElement('div');
+    overlay.id = 'htmlOverlay';
+    overlay.innerHTML = `
+      <figure class="stack">
+        <div class="card one"><span>Top</span></div>
+        <div class="card two"><span>Middle</span></div>
+        <div class="card three"><span>Bottom</span></div>
+      </figure>
+      <button id="closeOverlay" style="
+        position:absolute; top:20px; right:20px;
+        padding:8px 12px; font-size:14px; cursor:pointer;
+      ">Close</button>
+    `;
+    document.body.appendChild(overlay);
+
+    // Show overlay on Start click
+    btn.addEventListener('click', () => overlay.style.display = 'flex');
+    // Close overlay
+    overlay.querySelector('#closeOverlay')
+           .addEventListener('click', () => overlay.style.display = 'none');
   }
-
-  // === Clear old card entities ===
-  ["cardBack0", "cardBack1", "cardBack2"].forEach(tag => {
-    const ents = k.get(tag) || [];
-    ents.forEach(ent => {
-      if (ent && ent.destroy) ent.destroy();
-    });
-  });
-
-  // Load card textures (only once)
-  if (!k._spritesLoaded) {
-    await k.loadSprite("cardBack0", "/cardBack.png");
-    await k.loadSprite("cardBack1", "/cardBack.png");
-    await k.loadSprite("cardBack2", "/cardBack.png");
-    k._spritesLoaded = true;
-  }
-
-  // Set home positions and create cards
-  const homeX = [600, 950, 1300];
-  for (let i = 0; i < 3; i++) {
-    k.add([
-      k.sprite("cardBack" + i),
-      k.pos(homeX[i], 450),
-      k.anchor("center"),
-      k.scale(0.5),
-      k.area(),
-      k.body({ isStatic: true }),
-      "cardBack" + i
-    ]);
-  }
-
-  // Grab fresh entities
-  const cards = [
-    k.get("cardBack0")[0],
-    k.get("cardBack1")[0],
-    k.get("cardBack2")[0]
-  ];
-
-  // 1) Hop each card
-  for (let i = 0; i < cards.length; i++) {
-    await animateHop(k, cards[i], homeX[i]);
-  }
-
-  // 2) Scatter shuffle: random moves
-  const scatterCount = 6;
-  for (let pass = 0; pass < scatterCount; pass++) {
-    cards.forEach(card => {
-      if (card && card.pos) {
-        const randX = Math.random() * 800 + 400;
-        const randY = Math.random() * 300 + 300;
-        k.tween(
-          card.pos,
-          k.vec2(randX, randY),
-          400,
-          v => { card.pos = v; }
-        );
-      }
-    });
-    //await k.wait(1);
-  }
-
-  // 3) Gather back: return to home positions
-  cards.forEach((card, idx) => {
-    if (card && card.pos) {
-      k.tween(
-        card.pos,
-        k.vec2(homeX[idx], 450),
-        600,
-        v => { card.pos = v; }
-      );
-    }
-  });
-  //await k.wait(2);
-}
-
-// Helper: hop animation with ms durations
-async function animateHop(k, card, x) {
-  if (!card || !card.pos) return;
-  k.tween(
-    card.pos,
-    k.vec2(x, 400),
-    30,
-    v => { card.pos = v; }
-  );
-  //await k.wait(1);
-  k.tween(
-    card.pos,
-    k.vec2(x, 450),
-    20,
-    v => { card.pos = v; }
-  );
-  //await k.wait(2);
 }
