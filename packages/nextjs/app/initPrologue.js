@@ -67,7 +67,8 @@ export default function initPrologue() {
         });
     }
 
-    k.loadSprite("homeBackground", "./homeBackground.png");
+    k.loadSprite("homeBackground", "./prologueBackground.png");
+    k.loadSprite("room", "./roomBackground.png");
     k.loadSprite("characters", "./characters.png", {
         sliceY: 2, sliceX: 8, anims: {
             "down-idle": 0,
@@ -81,7 +82,8 @@ export default function initPrologue() {
         },
     });
 
-    const background = k.add([k.sprite("homeBackground"), k.pos(k.center()), k.scale(0.5), k.anchor("center"), "background"]);
+    const background = k.add([k.sprite("homeBackground"), k.pos(k.center()), k.anchor("center"), "background"]);
+    const roomBackground = k.add([k.sprite("room"), k.pos(k.center()), k.scale(0.5), k.opacity(0), k.anchor("center"), "roomBackground"]);
 
     const player = k.add([
         k.sprite("characters", {anim: "down-idle"}), 
@@ -129,8 +131,8 @@ export default function initPrologue() {
             player.move(player.direction.scale(player.speed));
         }
 
-        const backgroundWidth = background.width * 0.5; 
-        const backgroundHeight = background.height * 0.5;  
+        const backgroundWidth = roomBackground.width * 0.5; 
+        const backgroundHeight = roomBackground.height * 0.5;  
         const backgroundLeft = k.center().x - backgroundWidth / 2 + 75;
         const backgroundRight = k.center().x + backgroundWidth / 2 - 75;
         const backgroundBottom = k.center().y + backgroundHeight / 2 - 75;
@@ -202,7 +204,6 @@ export default function initPrologue() {
                         k.sprite("chest"),
                         k.pos(k.center().x, k.center().y), 
                         k.anchor("center"),
-                        k.scale(0.75), 
                         "chest",
                     ]);
 
