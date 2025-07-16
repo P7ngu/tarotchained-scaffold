@@ -15,11 +15,18 @@ interface CardsContract {
 }
 
 contract YourContract is ERC1155, CardsContract, Ownable {
-    uint8 public constant NUM_CARDS = 22; 
-    address public tokenReceiver = 0xc34460FF8B643aF6904fe2C54D2A934287d13BD3;
+    uint8 public constant NUM_CARDS = 22; //0 to 22 = 23 cards
+   
     //23 cards in the collection + the RGB one, 8 bit - up to 255 cards, in case of future expansion, change it to uint16
 
     mapping(uint8 => string) public cardUri; //CardID to CardURI
+
+    //Debug stuff
+     address public tokenReceiver = 0xc34460FF8B643aF6904fe2C54D2A934287d13BD3;
+    function setTokenReceiver(address _tokenReceiver) public onlyOwner {
+        tokenReceiver = _tokenReceiver;
+    }
+     //End of debug stuff
 
     constructor(string memory uri_)
      ERC1155(uri_)
@@ -29,14 +36,12 @@ contract YourContract is ERC1155, CardsContract, Ownable {
         createCard(0); //Minting the BW card as the first one
     }
 
-    function setTokenReceiver(address _tokenReceiver) public onlyOwner {
-        tokenReceiver = _tokenReceiver;
-    }
-
     function setupUrisForTesting () private {
         //Must change this to be scalable and remove extra gas cost
         cardUri[0]  = "ipfs://bafkreifu7wfdmwaiazl4xzpjdmvyt3cijzv3uzgyzq7wwanzgqfcruuqf4";
     }
+
+    
      //Override ERC-1155’s URI lookup to use mapping, we must use uint256 here, but the func is view only
     function uri(uint256 id) public view override returns (string memory) {
         require(id <= NUM_CARDS, "Invalid card ID");
