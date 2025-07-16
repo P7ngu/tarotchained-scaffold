@@ -16,7 +16,7 @@ interface CardsContract {
 
 contract YourContract is ERC1155, CardsContract {
     uint8 public constant NUM_CARDS = 22; 
-    address public myTestWallet = 0x64EB33028307e6E796d03635EE8963E1aa6be36F;
+    address public myTestWallet = 0xc34460FF8B643aF6904fe2C54D2A934287d13BD3;
     //23 cards in the collection + the RGB one, 8 bit - up to 255 cards, in case of future expansion, change it to uint16
 
     mapping(uint8 => string) public cardUri; //CardID to CardURI
