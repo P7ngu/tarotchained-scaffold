@@ -9,26 +9,48 @@ export default function initPrologue() {
         const style = document.createElement("style");
         style.id = "overlayStyles";
         style.textContent = `
-          body { background-color: #f7f7f7; }
+            body { background-color: #f7f7f7; }
     
-          #htmlOverlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 1); /* Sfondo nero */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 1; /* Inizialmente visibile */
-            transition: opacity 2s ease-out; /* Animazione di dissolvenza */
-          }
+            #htmlOverlay {
+                position: fixed;
+                top: 0; left: 0;
+                width: 100vw; height: 100vh;
+                background: rgba(0, 0, 0, 1); /* Sfondo nero */
+                display: flex;
+                flex-direction: column; /* Impila gli elementi in colonna */
+                align-items: center; /* Allinea gli elementi al centro orizzontalmente */
+                justify-content: center; /* Allinea gli elementi al centro verticalmente */
+                z-index: 2000;
+                opacity: 1; /* Inizialmente visibile */
+                transition: opacity 2s ease-out; /* Animazione di dissolvenza */
+            }
     
-          .overlayText {
-            font-size: 40px;
-            font-family: "Lucida Grande", sans-serif;
-            color: white; /* Testo bianco */
-          }
+            .overlayText {
+                font-size: 40px;
+                font-family: "Lucida Grande", sans-serif;
+                color: white; /* Testo bianco */
+                margin-bottom: 20px; /* Distanza tra il testo e il bottone */
+            }
+    
+            .overlayButtons {
+                display: flex;
+                flex-direction: column;
+                align-items: center; /* Centra il bottone */
+            }
+    
+            .button {
+                padding: 10px 20px;
+                font-size: 18px;
+                cursor: pointer;
+                background-color: #d2b48c; /* Colore di sfondo del bottone */
+                border: none;
+                border-radius: 6px;
+                color: #4a2c12;
+            }
+    
+            .button:hover {
+                background-color: #8b5c2c; /* Colore di sfondo quando si passa sopra */
+            }
         `;
         document.head.appendChild(style);
     }
@@ -51,15 +73,10 @@ export default function initPrologue() {
         secondOverlay.innerHTML = `
             <div class="overlayText">Now build your story</div>
             <div class="overlayButtons">
-                <button class="button" id="saveButton">Save in the Wallet</button>
                 <button class="button" id="continueButton">Continue</button>
             </div>
         `;
         document.body.appendChild(secondOverlay);
-
-        document.getElementById("saveButton").addEventListener("click", () => {
-        });
-
         document.getElementById("continueButton").addEventListener("click", () => {
             initGame();
             secondOverlay.style.display = "none";
