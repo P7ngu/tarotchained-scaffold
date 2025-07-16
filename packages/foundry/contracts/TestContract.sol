@@ -11,7 +11,10 @@ contract TestContract is ERC1155, Ownable {
 
     mapping(uint8 => string) public cardUri; //CardID to CardURI
 
-    constructor(string memory uri_) ERC1155(uri_) Ownable(msg.sender) {
+    constructor(string memory uri_)
+     ERC1155(uri_)
+     Ownable(msg.sender) 
+    {
         setupUrisForTesting();
     }
 
