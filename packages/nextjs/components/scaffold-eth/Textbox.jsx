@@ -12,6 +12,7 @@ const variants = {
 export default function TextBox(){
     const [isVisible, setIsVisible] = useAtom(isTextBoxVisibleAtom)
     const content = useAtomValue(textBoxContentAtom);
+    const fixedHint = "cliccami";
 
     const [isCloseRequest, setIsCloseRequest] = useState(false);
 
@@ -58,6 +59,7 @@ export default function TextBox(){
             onAnimationComplete={handleAnimationComplete}
           >
             <p>{content}</p>
+            <p className="click-enter-hint">ANNIBALE BARCA</p>
           </motion.div>
         </>
         )
