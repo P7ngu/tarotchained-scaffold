@@ -1,24 +1,38 @@
+"use client";
+
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+// app/layout.tsx  (server component)
 import "@rainbow-me/rainbowkit/styles.css";
-import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
-import { ThemeProvider } from "~~/components/ThemeProvider";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import { JustProviders, queryClient } from "~~/components/JustProviders";
+import { BlockieAvatar } from "~~/components/scaffold-eth";
+import { wagmiConfig } from "~~/services/web3/wagmiConfig";
+//import ClientProviders from "~~/app/ClientProvider";
+//import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
+// ← client component
 import "~~/styles/globals.css";
-import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
 
-export const metadata = getMetadata({
-  title: "Scaffold-ETH 2 App",
-  description: "Built with 🏗 Scaffold-ETH 2",
-});
+//export const metadata = {
+// title: "The Fool's Journey",
+// description: "A Journey of Self-Discovery and Freedom, tarot chained.",
+//};
 
-const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html suppressHydrationWarning className={``}>
+    <html suppressHydrationWarning>
       <body>
-        <ThemeProvider enableSystem>
-          <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
-        </ThemeProvider>
+        <WagmiProvider config={wagmiConfig}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider avatar={BlockieAvatar}>
+              {/*<ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>*/}
+              {/*<ClientProviders>{children}</ClientProviders>*/}
+
+              <JustProviders>{children}</JustProviders>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
       </body>
     </html>
   );
-};
-
-export default ScaffoldEthApp;
+}
