@@ -1,15 +1,16 @@
 "use client";
 
 import { NextPage } from "next";
+//import Image from "next/image";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth/useScaffoldReadContract";
 // Import card metadata JSON
 import cardsJson from "~~/majorArcana.json";
 
 type CardInfo = {
-  id: number;
+  id_card: number;
   name: string;
-  uri: string;
+  uri_card: string;
 };
 
 const PlayerCardsPage: NextPage = () => {
@@ -35,11 +36,11 @@ const PlayerCardsPage: NextPage = () => {
 
   const uniqueCards = Object.entries(cardCounts).map(([idStr, count]) => {
     const id = Number(idStr);
-    const info = (cardsJson as unknown as CardInfo[]).find(card => card.id === id);
+    const info = (cardsJson as CardInfo[]).find(card => card.id_card === id);
     return {
       id,
       name: info ? info.name : `Card #${id}`,
-      uri: info ? info.uri : "",
+      uri: info ? info.uri_card : "",
       count,
     };
   });
@@ -59,7 +60,8 @@ const PlayerCardsPage: NextPage = () => {
                     <img
                       src={uri}
                       alt={name}
-                      style={{ width: "80px", height: "80px", marginRight: "1rem", objectFit: "cover" }}
+                      style={{ width: 80, height: 80, marginRight: "1rem", objectFit: "cover" }}
+                      onError={() => console.error(`Failed to load image at ${uri}`)}
                     />
                   )}
                   <div>

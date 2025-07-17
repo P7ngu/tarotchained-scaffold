@@ -23,6 +23,11 @@ if (isIpfs) {
   nextConfig.trailingSlash = true;
   nextConfig.images = {
     unoptimized: true,
+    domains: ["olive-impossible-carp-486.mypinata.cloud"],
+    // OR, if you ever serve from multiple IPFS gateways:
+    // remotePatterns: [
+    //   { protocol: "https", hostname: "**.mypinata.cloud" }
+    // ],
   };
 }
 
