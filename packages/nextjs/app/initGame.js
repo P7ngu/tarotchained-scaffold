@@ -177,6 +177,25 @@ if (player.pos.y > bottom) player.pos.y = bottom;
 
 });
 
+k.loadSprite("button", "./collectionButton.png");
+const cButton = k.add([
+    k.sprite("button"),
+    k.pos(k.width() - 300, 150), 
+    k.anchor("center"),
+    "button",
+  ]);
+  window.addEventListener("keydown", handleKeyPress);
+
+  function handleKeyPress(e) {
+    if (e.code === "KeyI") { 
+      console.log("I key pressed!");
+      openCollectionPage(); 
+    }
+  }
+  
+  function openCollectionPage() {
+    window.open("/contractTest", "_blank");  
+  }
 
 k.loadSprite("text6", "./text1.png");
 k.loadSprite("text7", "./text7.png");
@@ -212,7 +231,9 @@ shop.onCollide("player", (player) => {
                   "text7",
               ]);
               step++;
-          }else {
+          }else if (step == 1){
+            window.open("/contractTest", "_blank");
+          }else{
               return;
           }
       }
