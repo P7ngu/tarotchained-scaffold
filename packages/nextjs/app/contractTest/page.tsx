@@ -3,6 +3,14 @@
 import { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth/useScaffoldReadContract";
+// Import card metadata JSON
+import cardsJson from "~~/majorArcana.json";
+
+type CardInfo = {
+  id: number;
+  name: string;
+  uri: string;
+};
 
 const PlayerCardsPage: NextPage = () => {
   // 1️⃣ grab the connected wallet
@@ -16,17 +24,55 @@ const PlayerCardsPage: NextPage = () => {
     watch: true,
   });
 
+  // 3️⃣ process cards: count occurrences and lookup metadata
+  const cardCounts: Record<number, number> = {};
+  if (playerCards) {
+    playerCards.forEach((id: bigint) => {
+      const num = Number(id);
+      cardCounts[num] = (cardCounts[num] || 0) + 1;
+    });
+  }
+
+  const uniqueCards = Object.entries(cardCounts).map(([idStr, count]) => {
+    const id = Number(idStr);
+    const info = (cardsJson as unknown as CardInfo[]).find(card => card.id === id);
+    return {
+      id,
+      name: info ? info.name : `Card #${id}`,
+      uri: info ? info.uri : "",
+      count,
+    };
+  });
+
   return (
     <div style={{ padding: "2rem" }}>
       <h1>Your Cards</h1>
       {!address ? (
         <p>Connect your wallet to see your cards.</p>
       ) : playerCards ? (
-        <ul>
-          {playerCards.map((id: bigint, i: number) => (
-            <li key={i}>Card #{id.toString()}</li>
-          ))}
-        </ul>
+        uniqueCards.length > 0 ? (
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            {uniqueCards.map(({ id, name, uri, count }) => (
+              <li key={id} style={{ marginBottom: "1.5rem" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  {uri && (
+                    <img
+                      src={uri}
+                      alt={name}
+                      style={{ width: "80px", height: "80px", marginRight: "1rem", objectFit: "cover" }}
+                    />
+                  )}
+                  <div>
+                    <strong style={{ fontSize: "1.2rem" }}>{name}</strong>
+                    <p>Copies: {count}</p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>You don’t have any cards yet.</p>
+        )
       ) : (
         <p>Loading…</p>
       )}
