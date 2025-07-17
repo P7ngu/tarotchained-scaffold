@@ -15,7 +15,7 @@ interface CardsContract {
 }
 
 contract YourContract is ERC1155, CardsContract, Ownable {
-    uint8 public constant NUM_CARDS = 22; //0 to 22 = 23 cards
+    uint8 public constant NUM_CARDS = 25; //0 to 25 = 26 cards - extra cards for future expansion
     //23 cards in the collection + the RGB one, 8 bit - up to 255 cards, in case of future expansion, change it to uint16
 
     mapping(uint8 => string) public cardUri; //CardID to CardURI
@@ -32,12 +32,12 @@ contract YourContract is ERC1155, CardsContract, Ownable {
      Ownable(msg.sender) 
     {
        // setupUrisForTesting();
-        assignFirstCard(msg.sender); //Minting the BW card as the first one for testing purposes
+        // assignFirstCard(msg.sender); //Minting the BW card as the first one for testing purposes
     }
 
     // Initialize or update URIs for a batch of card IDs
     function initCardUris(string[] calldata uris) external onlyOwner {
-        for (uint i = 0; i < uris.length; i++) {
+        for (uint i = 0; i < uris.length - 1; i++) {
             require(i <= NUM_CARDS, "Invalid card ID");
             cardUri[uint8(i)] = uris[i];
         }

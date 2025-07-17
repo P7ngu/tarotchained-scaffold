@@ -68,12 +68,12 @@ uris[21] = "https://moccasin-manual-narwhal-196.mypinata.cloud/ipfs/bafkreifpac2
 
         cardsContract.initCardUris(uris);
 
-        MockUSDC usdc = new MockUSDC();
-        usdc.transfer(msg.sender, 1000000);
+        //MockUSDC usdc = new MockUSDC();
+        //usdc.transfer(msg.sender, 1000000);
 
-        usdc.approve(address(cardsContract), 3e12);
-        cardsContract.setTokenReceiver(address(usdc));
+       // usdc.approve(address(cardsContract), 3e12);
+        //cardsContract.setTokenReceiver(address(usdc));
 
-        cardsContract.assignFirstCard(deployer);
+        //cardsContract.assignFirstCard(deployer);
     }
 }

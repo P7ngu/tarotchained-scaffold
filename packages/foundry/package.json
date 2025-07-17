@@ -10,6 +10,7 @@
     "chain": "make chain",
     "clean": "forge clean",
     "compile": "make compile",
+    "customdeploy": "forge script script/DeployYourContract.s.sol:DeployYourContract --account defaultkey --sender 0xc34460ff8b643af6904fe2c54d2a934287d13bd3 --rpc-url https://base-sepolia.drpc.org --broadcast -- --vvv",
     "deploy": "node scripts-js/parseArgs.js",
     "flatten": "make flatten",
     "fork": "make fork FORK_URL=${1:-mainnet}",
