@@ -1,85 +1,128 @@
 "use client";
 
-import { NextPage } from "next";
-//import Image from "next/image";
+import { useMemo } from "react";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth/useScaffoldReadContract";
-// Import card metadata JSON
 import cardsJson from "~~/majorArcana.json";
 
-type CardInfo = {
-  id_card: number;
-  name: string;
-  uri_card: string;
-};
+export default function MyPlayerCards() {
+  const { address, isConnected, isConnecting } = useAccount();
 
-const PlayerCardsPage: NextPage = () => {
-  // 1️⃣ grab the connected wallet
-  const { address } = useAccount();
-
-  // 2️⃣ call getPlayerCards with the user's address (auto-updates on change)
-  const { data: playerCards } = useScaffoldReadContract({
+  // Always pass a 1-tuple of (string | undefined)
+  const {
+    data: playerCards,
+    isLoading,
+    error,
+  } = useScaffoldReadContract({
     contractName: "YourContract",
     functionName: "getPlayerCards",
-    args: [address],
-    watch: true,
+    args: [address], // ← the fix: always one-element array
+    watch: Boolean(address),
   });
 
-  // 3️⃣ process cards: count occurrences and lookup metadata
-  const cardCounts: Record<number, number> = {};
-  if (playerCards) {
-    playerCards.forEach((id: bigint) => {
-      const num = Number(id);
-      cardCounts[num] = (cardCounts[num] || 0) + 1;
-    });
-  }
+  // Hooks must always be called in the same order:
+  const ownedCardIds = useMemo(() => {
+    if (!playerCards) return [];
+    return playerCards.map((bal: bigint, idx: number) => (bal > 0n ? idx : -1)).filter(i => i >= 0);
+  }, [playerCards]);
 
-  const uniqueCards = Object.entries(cardCounts).map(([idStr, count]) => {
-    const id = Number(idStr);
-    const info = (cardsJson as CardInfo[]).find(card => card.id_card === id);
-    return {
-      id,
-      name: info ? info.name : `Card #${id}`,
-      uri: info ? info.uri_card : "",
-      count,
-    };
-  });
+  const ownedCards = useMemo(() => {
+    return cardsJson.filter(card => ownedCardIds.includes(card.id_card));
+  }, [ownedCardIds]);
+
+  // UI states
+  if (isConnecting) return <p className="status">Detecting wallet…</p>;
+  if (!isConnected) return <p className="status">Please connect your wallet.</p>;
+  if (isLoading) return <p className="status">Loading your cards…</p>;
+  if (error) return <p className="status error">Error loading cards: {String(error)}</p>;
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Your Cards</h1>
-      {!address ? (
-        <p>Connect your wallet to see your cards.</p>
-      ) : playerCards ? (
-        uniqueCards.length > 0 ? (
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            {uniqueCards.map(({ id, name, uri, count }) => (
-              <li key={id} style={{ marginBottom: "1.5rem" }}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  {uri && (
-                    <img
-                      src={uri}
-                      alt={name}
-                      style={{ width: 80, height: 80, marginRight: "1rem", objectFit: "cover" }}
-                      onError={() => console.error(`Failed to load image at ${uri}`)}
-                    />
-                  )}
-                  <div>
-                    <strong style={{ fontSize: "1.2rem" }}>{name}</strong>
-                    <p>Copies: {count}</p>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>You don’t have any cards yet.</p>
-        )
+    <section className="cards-container">
+      <h2 className="title">Your Cards</h2>
+      {ownedCards.length === 0 ? (
+        <p className="empty">You don’t own any cards yet.</p>
       ) : (
-        <p>Loading…</p>
+        <ul className="cards-list">
+          {ownedCards.map(card => (
+            <li key={card.id_card} className="card-item">
+              <div className="card-image">
+                <img src={card.uri_card} alt={card.name} />
+              </div>
+              <div className="card-content">
+                <h3 className="card-name">{card.name}</h3>
+                <p className="card-desc">{card.description}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       )}
-    </div>
-  );
-};
 
-export default PlayerCardsPage;
+      <style jsx>{`
+        .cards-container {
+          padding: 1rem;
+          max-width: 800px;
+          margin: 0 auto;
+        }
+        .title {
+          font-size: 1.75rem;
+          margin-bottom: 1rem;
+          text-align: center;
+          color: #333;
+        }
+        .status {
+          text-align: center;
+          font-size: 1rem;
+          color: #555;
+        }
+        .status.error {
+          color: #c00;
+        }
+        .empty {
+          text-align: center;
+          font-style: italic;
+          color: #777;
+        }
+        .cards-list {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 1.5rem;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+        .card-item {
+          background: #fff;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          transition: transform 0.2s;
+        }
+        .card-item:hover {
+          transform: translateY(-4px);
+        }
+        .card-image img {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
+        .card-content {
+          padding: 0.75rem;
+          flex-grow: 1;
+        }
+        .card-name {
+          font-size: 1.25rem;
+          margin: 0 0 0.5rem;
+          color: #222;
+        }
+        .card-desc {
+          font-size: 0.875rem;
+          margin: 0;
+          color: #555;
+        }
+      `}</style>
+    </section>
+  );
+}

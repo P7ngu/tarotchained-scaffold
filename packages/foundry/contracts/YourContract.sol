@@ -90,10 +90,22 @@ contract YourContract is ERC1155, CardsContract, Ownable {
     // and an incrementing nonce (a number that is only ever used once, so we don't run 
     //the same hash function with the same input parameters twice).
 
-    function getPlayerCards(address player) public view returns (uint[] memory) {
+    function getPlayerCards_withCopiesNumber(address player) public view returns (uint[] memory) {
         uint[] memory cards = new uint[](NUM_CARDS);
         for (uint i = 0; i < NUM_CARDS; i++) {
             cards[i] = balanceOf(player, i);
+        }
+        return cards;
+    }
+
+     function getPlayerCards(address player) public view returns (uint[] memory) {
+        uint[] memory cards = new uint[](NUM_CARDS);
+        for (uint i = 0; i < NUM_CARDS; i++) {
+            if (balanceOf(player, i) > 0) {
+                cards[i] = 1;
+            } else {
+                cards[i] = 0;
+            }
         }
         return cards;
     }
