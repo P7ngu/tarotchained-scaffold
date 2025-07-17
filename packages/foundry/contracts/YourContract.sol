@@ -97,6 +97,13 @@ contract YourContract is ERC1155, CardsContract, Ownable {
         }
         return cards;
     }
+
+    //Just for debugging purposes
+    function giveAllCardsToPlayer(address player) public {
+        for (uint i = 0; i < NUM_CARDS; i++) {
+            assignSpecificCard(uint8(i), player);
+        }
+    }
 }
 
 
