@@ -36,10 +36,10 @@ contract YourContract is ERC1155, CardsContract, Ownable {
     }
 
     // Initialize or update URIs for a batch of card IDs
-    function setCardUris(uint8[] calldata ids, string[] calldata uris) external onlyOwner {
-        for (uint i = 0; i < ids.length; i++) {
-            require(ids[i] <= NUM_CARDS, "Invalid card ID");
-            cardUri[ids[i]] = uris[i];
+    function initCardUris(string[] calldata uris) external onlyOwner {
+        for (uint i = 0; i < uris.length; i++) {
+            require(i <= NUM_CARDS, "Invalid card ID");
+            cardUri[uint8(i)] = uris[i];
         }
     }
 
