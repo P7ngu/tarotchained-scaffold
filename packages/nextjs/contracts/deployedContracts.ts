@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     YourContract: {
-      address: "0x45b0bbaceedcfbae96aec2d2ffef70777b0b3ae3",
+      address: "0x9db9797733fe5f734724aa05d29fa39563563af5",
       abi: [
         {
           type: "constructor",
@@ -160,6 +160,25 @@ const deployedContracts = {
         {
           type: "function",
           name: "getPlayerCards",
+          inputs: [
+            {
+              name: "player",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256[]",
+              internalType: "uint256[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getPlayerCards_withCopiesNumber",
           inputs: [
             {
               name: "player",
@@ -806,7 +825,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1752715407.json",
+      deploymentFile: "run-1752717186.json",
       deploymentScript: "Deploy.s.sol",
     },
   },
