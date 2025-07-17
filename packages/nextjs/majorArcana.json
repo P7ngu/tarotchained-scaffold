@@ -1,0 +1,134 @@
+[
+  {
+    "name": "The Fool",
+    "description": "A step into the void, heart open to possibility: the beginning of everything, where consciousness has yet to know itself.",
+    "uri_card": "bafkreihd2hhxff25j6f4l3fdrvpj45mgbu2pjmfie7ef2nsu5dfj4hmwhi",
+    "id_card": 0
+  },
+  {
+    "name": "The Magician",
+    "description": "The spark of will manifests: what you imagine can be created.",
+    "uri_card": "bafkreif2hgdj55ifo4gwywijvvampk3gxdqqy7pdwl4lwowjpxwjvix2sa",
+    "id_card": 1
+  },
+  {
+    "name": "The High Priestess",
+    "description": "Silence guards the soul’s secrets: there is power in knowledge and in the need to wait.",
+    "uri_card": "bafkreif7vh3mklc4jeq2idtyhjxfl4n5qm2b22xbndcl3xbmigryrwptky",
+    "id_card": 2
+  },
+  {
+    "name": "The Empress",
+    "description": "Life grows where there is room to feel: abundance is nourished by beauty, care, and fertile vision.",
+    "uri_card": "bafkreidv2m56mwi3eczhs7jsi5yy3osshy55zp7rlm2hqs3kesaaqtwysy",
+    "id_card": 3
+  },
+  {
+    "name": "The Emperor",
+    "description": "Seeking order to shape chaos: a structure is born to contain creative fire.",
+    "uri_card": "bafkreiaiovqzjkclpbxfmgkxzt6utrdfazeqic4g2qszylgt5li6ie5epy",
+    "id_card": 4
+  },
+  {
+    "name": "The Hierophant",
+    "description": "Listen to the voice that unites spirit and body. Welcome its guidance with discernment.",
+    "uri_card": "bafkreigg5627iobjn7bb26bm436d3isyonz3hb3t5zxksktwza3pmkddue",
+    "id_card": 5
+  },
+  {
+    "name": "The Lovers",
+    "description": "To love is a political act: meeting the other reveals parts of oneself, and love demands courage.",
+    "uri_card": "bafkreibq7ktsi5epikxrmkshmdtcwsqcqcspb74fgzmvul5r2sm5i2k5rq",
+    "id_card": 6
+  },
+  {
+    "name": "The Chariot",
+    "description": "Willpower finds its direction: to move forward is an act of identity affirmation.",
+    "uri_card": "bafkreihwstfg6vwbpmeat7v4hmhfzegwvic4ng3qj2glypvgheokqb5z6q",
+    "id_card": 7
+  },
+  {
+    "name": "Justice",
+    "description": "Everything finds its balance, sooner or later: truth will emerge between the world’s invisible lines.",
+    "uri_card": "bafkreibaqkky2hs4oidgrc5djkpsjrbsf23ivllvkbpc6zeertda2tnqve",
+    "id_card": 8
+  },
+  {
+    "name": "The Hermit",
+    "description": "Those who seek the light often find it in the darkness of introspection: the inner path is unhurried, but it leads far.",
+    "uri_card": "bafkreif7qxxdz7skv2hfno2be534jmapewefhyk3a2wzia3bpboucde76q",
+    "id_card": 9
+  },
+  {
+    "name": "The Wheel of Fortune",
+    "description": "Nothing stands still, yet every cycle has meaning: fate turns, and the soul learns by dancing with the new.",
+    "uri_card": "bafkreidlzlrjtliglrehn6mtoikvycjig6ikdhibe4m6enoshivmdlianq",
+    "id_card": 10
+  },
+  {
+    "name": "Strength",
+    "description": "Tenderness is more powerful than it seems. Those who embrace their identity become myth.",
+    "uri_card": "bafkreibgkauxyvxiohtkdsou34pmc3o7r4k2auas2qdn7wc4fwyjgpih2u",
+    "id_card": 11
+  },
+  {
+    "name": "The Hanged Man",
+    "description": "To reverse perspective is to die a little: sometimes it’s by stopping that we go further.",
+    "uri_card": "bafkreiggoactilmhz74e7txsfrtckrajhxgqivpmii3vjuh65ar7m734xu",
+    "id_card": 12
+  },
+  {
+    "name": "Death",
+    "description": "What ends creates space: not all that dies is a loss—some things set us free.",
+    "uri_card": "bafkreictmpl7jmnd33mikg457mmfh4giny26uwpbl4bs2qaz2l2ykyvplm",
+    "id_card": 13
+  },
+  {
+    "name": "Temperance",
+    "description": "Every excess seeks its center: art lies in mixing, and to flow is to live.",
+    "uri_card": "bafkreibpwfwxpwjvyax3w5hdtj4sdljrf6j2ihzun5yumypk7cnasyjdly",
+    "id_card": 14
+  },
+  {
+    "name": "The Devil",
+    "description": "What do you truly crave when no one is watching? Chains are light as feathers, but who holds them?",
+    "uri_card": "bafkreiab6ygcp6r6jbjdx5xdyeswva5as3nli3irn5hrcwrfii7i7wt34y",
+    "id_card": 15
+  },
+  {
+    "name": "The Tower",
+    "description": "The fall is a blessing: among the rubble, you finally breathe.",
+    "uri_card": "bafkreid6mgvasiot4iajl6ho3s6gxtthrxhmokxq6lwtxwlbvggxw4wmne",
+    "id_card": 16
+  },
+  {
+    "name": "The Star",
+    "description": "After destruction, a whisper of hope: beauty is naked, it shines, and asks no permission.",
+    "uri_card": "bafkreidsbaublaav6ym4qnvn6q4dvfhea7h7fhagfqxefauzwhdadh2dse",
+    "id_card": 17
+  },
+  {
+    "name": "The Moon",
+    "description": "Not everything that shines is immediately clear: the unconscious, dreams, and fear naturally accompany revelation.",
+    "uri_card": "bafkreidggfhhnvcfxh5v3ahzk7arri7ylb73awgbfe3o6fblfl5zfoymwy",
+    "id_card": 18
+  },
+  {
+    "name": "The Sun",
+    "description": "Joy that radiates without reason: your truth, when shared, becomes light for others.",
+    "uri_card": "bafkreihztihj647yaecuew3tidlcutmposmdeyq7cossnhygxpk7kmoxsm",
+    "id_card": 19
+  },
+  {
+    "name": "Judgement",
+    "description": "The inner voice that calls us to remember who we are: the final awakening, and it happens when we are ready.",
+    "uri_card": "bafkreia6pjlo2zfppttymwmguueuuh2c67z73a4dn7qghmixbpo5cwew6i",
+    "id_card": 20
+  },
+  {
+    "name": "The World",
+    "description": "All that needed to happen has happened: the soul, the circle closes—but only to dance again.",
+    "uri_card": "bafkreifpac2536ptebk7azydmurqmbbxkujkddrcftzrmeueqercnxemve",
+    "id_card": 21
+  }
+]
