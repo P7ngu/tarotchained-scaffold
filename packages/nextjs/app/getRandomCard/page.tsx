@@ -1,24 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import cardsJson from "~~/majorArcana.json";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 export default function MyPlayerCards() {
-  const { address, isConnected, isConnecting } = useAccount();
-
-  // 1️⃣ Read your current cards
-  const {
-    data: playerCards,
-    isLoading: isReading,
-    error: readError,
-  } = useScaffoldReadContract({
-    contractName: "YourContract",
-    functionName: "getPlayerCards",
-    args: [address],
-    watch: Boolean(address),
-  });
+  const { address } = useAccount();
+  const router = useRouter();
 
   // 2️⃣ Prepare the write hook to assign randomly
   const { writeContractAsync: writeToAssignRandomCard } = useScaffoldWriteContract({
@@ -31,68 +20,44 @@ export default function MyPlayerCards() {
         functionName: "assignCardRandomly",
         args: [to],
       });
+      // After drawing, navigate to collection page
+      router.push("/contractTest");
     } catch (error) {
       console.error("Error assigning random card:", error);
     }
   };
 
-  // 3️⃣ Compute owned card IDs & metadata
-  const ownedCardIds = useMemo(() => {
-    if (!playerCards) return [];
-    return playerCards.map((bal: bigint, idx: number) => (bal > 0n ? idx : -1)).filter(i => i >= 0);
-  }, [playerCards]);
-
-  const ownedCards = useMemo(() => cardsJson.filter(card => ownedCardIds.includes(card.id_card)), [ownedCardIds]);
-
-  // 4️⃣ Handle loading / error states
-  if (isConnecting) return <p className="status">Detecting wallet…</p>;
-  if (!isConnected) return <p className="status">Please connect your wallet.</p>;
-  if (isReading) return <p className="status">Loading your cards…</p>;
-  if (readError) return <p className="status error">Error: {String(readError)}</p>;
-
   return (
     <section className="cards-container">
-      <h2 className="title">Your Cards</h2>
+      <h2 className="title">Add a piece to your story</h2>
 
       {/* 🃏 Draw a new random card */}
       <div className="button-wrap">
         <button className="assign-button" onClick={() => handleAssignRandomCard(address!)} disabled={!address}>
-          Draw a Random Card
+          🎴 Draw Random Card 🎴
         </button>
       </div>
 
-      {/* 📜 Show owned cards */}
-      {ownedCards.length === 0 ? (
-        <p className="empty">You don’t own any cards yet.</p>
-      ) : (
-        <ul className="cards-list">
-          {ownedCards.map(card => (
-            <li key={card.id_card} className="card-item">
-              <div className="card-image">
-                <img src={card.uri_card} alt={card.name} />
-              </div>
-              <div className="card-content">
-                <h3 className="card-name">{card.name}</h3>
-                <p className="card-desc">{card.description}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* 🔍 View your full collection */}
+      <div className="button-wrap">
+        <Link href="/contractTest" className="view-collection-button">
+          ✨ View Your Collection ✨
+        </Link>
+      </div>
 
       <style jsx>{`
         .cards-container {
           padding: 2rem 1rem;
           max-width: 900px;
           margin: 0 auto;
-          background: #f9f9f9;
+          background: #fdfdfd;
           border-radius: 12px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
         }
         .title {
           font-size: 2rem;
           text-align: center;
-          margin-bottom: 1.5rem;
+          margin-bottom: 2rem;
           color: #2c3e50;
         }
         .status {
@@ -106,27 +71,48 @@ export default function MyPlayerCards() {
         .button-wrap {
           display: flex;
           justify-content: center;
-          margin-bottom: 1.75rem;
+          margin-bottom: 1.5rem;
         }
         .assign-button {
-          background: #3498db;
+          background: linear-gradient(135deg, #8e44ad 0%, #2980b9 100%);
           color: #fff;
           border: none;
-          padding: 0.75rem 1.5rem;
-          font-size: 1rem;
-          border-radius: 8px;
+          padding: 1rem 2rem;
+          font-size: 1.1rem;
+          font-weight: bold;
+          border-radius: 50px;
           cursor: pointer;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
           transition:
-            background 0.2s,
+            box-shadow 0.2s,
             transform 0.2s;
         }
         .assign-button:disabled {
           background: #bdc3c7;
+          box-shadow: none;
           cursor: not-allowed;
         }
-        .assign-button:hover:not(:disabled) {
-          background: #2980b9;
-          transform: translateY(-2px);
+        .assign-button:not(:disabled):hover {
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .view-collection-button {
+          display: inline-block;
+          background: linear-gradient(135deg, #f39c12 0%, #d35400 100%);
+          color: #fff;
+          text-decoration: none;
+          padding: 0.75rem 1.75rem;
+          font-size: 1rem;
+          font-weight: 600;
+          border-radius: 50px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          transition:
+            transform 0.2s,
+            box-shadow 0.2s;
+        }
+        .view-collection-button:hover {
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
         .empty {
           text-align: center;
@@ -135,44 +121,45 @@ export default function MyPlayerCards() {
         }
         .cards-list {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-          gap: 1.5rem;
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+          gap: 1rem;
           list-style: none;
           padding: 0;
           margin: 0;
         }
         .card-item {
           background: #fff;
-          border-radius: 10px;
+          border-radius: 8px;
           overflow: hidden;
           display: flex;
           flex-direction: column;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
           transition:
             transform 0.2s,
             box-shadow 0.2s;
         }
         .card-item:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+          transform: translateY(-2px);
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
         }
         .card-image img {
           width: 100%;
-          height: auto;
+          height: 120px;
+          object-fit: cover;
           display: block;
         }
         .card-content {
-          padding: 1rem;
+          padding: 0.75rem;
           flex-grow: 1;
         }
         .card-name {
-          margin: 0 0 0.5rem;
-          font-size: 1.25rem;
+          margin: 0 0 0.25rem;
+          font-size: 1rem;
           color: #34495e;
         }
         .card-desc {
           margin: 0;
-          font-size: 0.9rem;
+          font-size: 0.8rem;
           color: #7f8c8d;
         }
       `}</style>
