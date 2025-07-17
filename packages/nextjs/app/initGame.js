@@ -232,7 +232,7 @@ shop.onCollide("player", (player) => {
               ]);
               step++;
           }else if (step == 1){
-            window.open("/contractTest", "_blank");
+            window.open("/getRandomCard", "_blank");  
           }else{
               return;
           }
