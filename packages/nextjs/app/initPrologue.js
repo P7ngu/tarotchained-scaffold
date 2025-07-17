@@ -280,8 +280,10 @@ export default function initPrologue() {
                         "text5",
                     ]);
                     step++;
-                }else {
+                }else if (step == 4) {
                     createSecondOverlay();
+                    step++;
+                }else {
                     return;
                 }
             }

@@ -8,94 +8,6 @@ export default function initGame() {
     const k = initKaplay();
     const DIAGONAL_FACTOR = 1/ Math.sqrt(2);
 
-    if (!document.getElementById("overlayStyles")) {
-  const style = document.createElement("style");
-  style.id = "overlayStyles";
-  style.textContent = `
-    body { background-color: #f7f7f7; }
-
-    #htmlOverlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-    }
-
-    .black-box {
-      width: 400px;
-      height: 300px;
-      background-color: black;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 20px;
-      color: white;
-      font-size: 24px;
-      font-family: sans-serif;
-      position: relative;
-    }
-
-    #closeOverlay {
-      align-self: flex-start;
-      background-color: #d2b48c; /* Marrone chiaro (tan) */
-      border: 2px solid #8b5c2c; /* Marrone più scuro */
-      color: #4a2c12;
-      padding: 8px 12px;
-      font-size: 14px;
-      cursor: pointer;
-      border-radius: 6px;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-if (!document.getElementById("startShuffle")) {
-  // Start button
-  const btn = document.createElement("button");
-  btn.id = "showInventory";
-  btn.textContent = "Show Inventory";
-  Object.assign(btn.style, {
-    position: "absolute",
-    top: "20px",
-    right: "20px",
-    padding: "10px 20px",
-    zIndex: "1000",
-    fontSize: "16px",
-    cursor: "pointer",
-  });
-  document.body.appendChild(btn);
-
-  // Overlay with single black box
-  const overlay = document.createElement("div");
-  overlay.id = "htmlOverlay";
-  overlay.innerHTML = `
-    <div class="black-box">
-      <div>Inventory content here</div>
-      <button id="closeOverlay">Close</button>
-    </div>
-  `;
-  document.body.appendChild(overlay);
-
-  // Show overlay
-  btn.addEventListener("click", () => {
-    overlay.style.display = "flex";
-  });
-
-  // Hide overlay
-  overlay.querySelector("#closeOverlay")
-         .addEventListener("click", () => {
-    overlay.style.display = "none";
-  });
-}
-
-
-    
     k.loadSprite("tarotDesk", "./tarotDesk.png");
     k.loadSprite("background", "./background.png");
     k.loadSprite("blackShop", "./blackShop.png");
@@ -119,14 +31,12 @@ if (!document.getElementById("startShuffle")) {
         },
     });
 
-
     const background = k.add([
         k.sprite("background"), 
         k.pos(k.center()), 
         k.scale(1), 
         k.anchor("center"), 
         "background"]);
-
 
       const player = k.add([
         k.sprite("characters", {anim: "down-idle"}),
@@ -151,13 +61,6 @@ if (!document.getElementById("startShuffle")) {
         k.body({ isStatic: true }), 
         "shop",
     ]);
-
-    shop.onCollide("player", (player) => {
-        console.log("player entered shop");
-        store.set(isTextBoxVisibleAtom, true);  
-        store.set(textBoxContentAtom, "Benvenuto nella mia bottega!");
-        
-    });
 
      const blackShop = k.add([
         k.sprite("blackShop"),
@@ -275,4 +178,45 @@ if (player.pos.y > bottom) player.pos.y = bottom;
 });
 
 
+k.loadSprite("text6", "./text1.png");
+k.loadSprite("text7", "./text7.png");
+k.loadSprite("cards1", "./cards2.png");
+
+let text = null;
+let cards = null;
+shop.onCollide("player", (player) => {
+  let step = 0;
+
+  text = k.add([
+      k.sprite("text6"),
+      k.pos(k.center().x, k.center().y + 450), 
+      k.anchor("center"),
+      "text6",
+  ]);
+  window.addEventListener("keydown", handleKeyPress);
+
+  function handleKeyPress(e) {
+      if (e.code === "Enter") {
+          if (step == 0){
+
+            cards = k.add([
+              k.sprite("cards1"),
+              k.pos(k.center().x, k.center().y), 
+              k.anchor("center"),
+              "cards1",
+          ]);
+              text = k.add([
+                  k.sprite("text7"),
+                  k.pos(k.center().x, k.center().y + 450), 
+                  k.anchor("center"),
+                  "text7",
+              ]);
+              step++;
+          }else {
+              return;
+          }
+      }
+  }
+});
 }
+
