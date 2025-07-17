@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     YourContract: {
-      address: "0x82c6d3ed4cd33d8ec1e51d0b5cc1d822eaa0c3dc",
+      address: "0x6379ebd504941f50d5bfde9348b37593bd29c835",
       abi: [
         {
           type: "constructor",
@@ -355,6 +355,24 @@ const deployedContracts = {
               name: "approved",
               type: "bool",
               internalType: "bool",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setCardUris",
+          inputs: [
+            {
+              name: "ids",
+              type: "uint8[]",
+              internalType: "uint8[]",
+            },
+            {
+              name: "uris",
+              type: "string[]",
+              internalType: "string[]",
             },
           ],
           outputs: [],
@@ -780,7 +798,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1752711547.json",
+      deploymentFile: "run-1752714705.json",
       deploymentScript: "Deploy.s.sol",
     },
   },

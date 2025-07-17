@@ -31,15 +31,17 @@ contract YourContract is ERC1155, CardsContract, Ownable {
      ERC1155(uri_)
      Ownable(msg.sender) 
     {
-        setupUrisForTesting();
-        assignFirstCard(tokenReceiver); //Minting the BW card as the first one
+       // setupUrisForTesting();
+        assignFirstCard(msg.sender); //Minting the BW card as the first one for testing purposes
     }
 
-    function setupUrisForTesting () private {
-        //Must change this to be scalable and remove extra gas cost
-        cardUri[0]  = "ipfs://bafkreifu7wfdmwaiazl4xzpjdmvyt3cijzv3uzgyzq7wwanzgqfcruuqf4";
+    // Initialize or update URIs for a batch of card IDs
+    function setCardUris(uint8[] calldata ids, string[] calldata uris) external onlyOwner {
+        for (uint i = 0; i < ids.length; i++) {
+            require(ids[i] <= NUM_CARDS, "Invalid card ID");
+            cardUri[ids[i]] = uris[i];
+        }
     }
-
 
      //Override ERC-1155’s URI lookup to use mapping, we must use uint256 here, but the func is view only
     function uri(uint256 id) public view override returns (string memory) {

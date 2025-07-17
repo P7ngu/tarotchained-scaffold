@@ -35,7 +35,20 @@ contract DeployYourContract is ScaffoldETHDeploy {
 
     
     function run() external ScaffoldEthDeployerRunner {
-        cardsContract = new YourContract("ipfs://bafkreifu7wfdmwaiazl4xzpjdmvyt3cijzv3uzgyzq7wwanzgqfcruuqf4");
+        cardsContract = new YourContract("");
+
+        // 2) Batch-initialize all card URIs in one tx
+        uint8[] memory ids = new uint8[](23);
+        string[] memory uris = new string[](23);
+
+        // Update the card URIs from the majorArcana.json ──
+        ids[0]  = 0;  uris[0]  = "https://bafkreibbdwdhi6ught72bplw7brsl3cvz2zhg3lfeichuiklzlto5bd3ly";
+        ids[1]  = 1;  uris[1]  = "https://moccasin-manual-narwhal-196.mypinata.cloud/ipfs/bafkreif2hgdj55ifo4gwywijvvampk3gxdqqy7pdwl4lwowjpxwjvix2sa";
+        // …
+        ids[22] = 22; uris[22] = "https://test.com";
+        // ──────────────────────────────────────
+
+        cardsContract.setCardUris(ids, uris);
 
         MockUSDC usdc = new MockUSDC();
         usdc.transfer(msg.sender, 1000000);
