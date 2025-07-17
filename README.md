@@ -1,4 +1,5 @@
-# 🌈 Fool’s Journey 🃏
+# 🌈 The Fool’s Journey 🃏
+or Fool's Journey to keep it simple
 
 **An interactive game blending tarot symbolism, queer identity exploration, and Web3, MFT & blockchain technology.**
 
